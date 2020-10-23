@@ -10,9 +10,8 @@ import pong.Pong;
 
 public class Ball extends Rectangle {
 	public int dx, dy; // Upper Bound is 14
-	public boolean isServingToRight; // -1 is left, 1 is right
+	public boolean isServingToRight; 
 
-	// Rectangle ball = new Rectangle(x, y, height, width);
 	final int x_start, y_start, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;;
 
 	public Ball(int x, int y, int height, int width, int dx, int dy) {
@@ -32,7 +31,7 @@ public class Ball extends Rectangle {
 		this.setLocation(x_start, y_start);
 		this.dx = 0;
 		this.dy = 0;
-		p.isPlaying = false;
+		p.is2PPlaying = false;
 	}
 
 	// Shatter Animation for Ball hitting side wall?
@@ -68,7 +67,7 @@ public class Ball extends Rectangle {
 				dx *= -1;
 		}
 
-		p.isPlaying = true;
+		p.is2PPlaying = true;
 	}
 
 	/*
@@ -83,16 +82,16 @@ public class Ball extends Rectangle {
 	 */
 
 	public void ballBounce(Pong p) {
-		int sumPoints = p.p1Points + p.p2Points;
-		
 		if (this.getMaxX() > MAX_WINDOW_X) {
 			ballReset(p);
 			p.p1Points += 1;
 			isServingToRight = false;
+			p.isRScoreScreen = true;
 		} else if (this.getX() < 0) {
 			ballReset(p);
 			p.p2Points += 1;
 			isServingToRight = true;
+			p.isRScoreScreen = true;
 		}
 		
 		if (this.getMinY() <= 0) {

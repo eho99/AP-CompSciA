@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.io.InputStreamReader;
 
 public class Scoreboard {
 	final int PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
@@ -43,11 +42,12 @@ public class Scoreboard {
 		brush.drawString(rallyChallengePt, (MAX_WINDOW_X / 2) - (width / 2), 100);
 	}
 
-	public void drawFinalScore(Graphics2D brush, Pong p) {
+	public void drawFinalScore(Graphics2D brush, Pong p, TitleScreen title) {
+		title.canvasClean(brush);
 		String finalPt = Integer.toString(p.rallyChallengePt);
 		String text = "You scored " + finalPt + " points!";
 
-		if (!p.isPlaying && p.is1P) {
+		if (!p.is1PPlaying && p.is1P) {
 			int textSize = 70;
 			brush.setColor(Color.WHITE);
 			brush.setFont(new Font("Trebuchet MS", Font.BOLD, 70));
@@ -60,7 +60,6 @@ public class Scoreboard {
 			width = getTextWidth(brush, text);
 			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 440);
 		}
-
 	}
 
 	public void drawWin(Graphics2D brush, Pong p) {

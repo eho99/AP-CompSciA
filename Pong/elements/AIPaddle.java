@@ -1,8 +1,6 @@
 package elements;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 import pong.Pong;
 
@@ -20,9 +18,7 @@ public class AIPaddle extends Paddle {
 	
 	public void AIPadCol(Ball b, Pong p) {
 		boolean inYRange = (b.getMaxY() >= this.getMinY()) && (b.getMinY() <= this.getMaxY());
-		boolean isAtFront = (((b.getMinX() >= this.getCenterX()) && (b.getMinX() <= PADDING + this.width))
-				&& (b.dx < 0))
-				|| (((b.getMaxX() <= this.getCenterX()) && b.getMaxX() >= MAX_WINDOW_X - this.width) && (b.dx > 0));
+		boolean isAtFront = (((b.getMaxX() <= this.getMaxX()) && b.getMaxX() >= MAX_WINDOW_X - this.width) && (b.dx > 0));
 
 		if (inYRange) {
 			if (isAtFront) {

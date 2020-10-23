@@ -1,7 +1,5 @@
 package pong;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
@@ -18,7 +16,7 @@ public class Pong extends GDV5 {
 	int sLPadX = 10, sLPadY = 250 - PADDING, LPadHeight = 100, LPadWidth = 25;
 	int sRPadX = 775, sRPadY = 250 - PADDING, RPadHeight = 100, RPadWidth = 25;
 
-	public boolean isPlaying = false, isHelpScreen = false, isTitleScreen = true, is1P = false, is2P = false, isWinScreen = false,
+	public boolean is2PPlaying = false, is1PPlaying = false, isHelpScreen = false, isTitleScreen = true, is1P = false, is2P = false, isWinScreen = false,
 			isRScoreScreen = false, isPauseScreen = false;
 
 	Ball ball = new Ball(sBallX, sBallY, ballHeight, ballWidth, 0, 0);
@@ -29,8 +27,8 @@ public class Pong extends GDV5 {
 	TitleScreen title = new TitleScreen();
 	Scoreboard scoreboard = new Scoreboard();
 
-	public void paddleMove(boolean isPlaying) {
-		if (isPlaying) {
+	public void paddleMove() {
+		if (is2PPlaying) {
 			if (KeysPressed[KeyEvent.VK_S]) {
 				p1.dy = 10;
 			} else if (KeysPressed[KeyEvent.VK_W]) {
@@ -71,7 +69,7 @@ public class Pong extends GDV5 {
 	}
 
 	public boolean showHelp() {
-		if (!isPlaying && isTitleScreen) {
+		if (!is2PPlaying && isTitleScreen) {
 			if (KeysPressed[KeyEvent.VK_H]) {
 				return true;
 			}
@@ -84,19 +82,21 @@ public class Pong extends GDV5 {
 			title.canvasClean(brush);
 			isTitleScreen = true;
 			isHelpScreen = false;
-			isPlaying = false;
+			is2PPlaying = false;
 			isWinScreen = false;
 			is2P = false;
 			is1P = false;
 			isRScoreScreen = false;
+			ball.ballReset(this);
 			p1Points = 0;
 			p2Points = 0;
+			rallyChallengePt = 0;
 		}
 	}
 
 	/* TBD Implemented - PAUSE FEATURES
 	public boolean pauseGame(Graphics2D brush) {
-		if (isPlaying && !isTitleScreen) {
+		if (is2PPlaying && !isTitleScreen) {
 			if (KeysPressed[KeyEvent.VK_P]) {
 				return true;
 			}
@@ -107,7 +107,7 @@ public class Pong extends GDV5 {
 	public void unPause(Graphics2D brush) {
 		if (KeysPressed[KeyEvent.VK_U]) {
 			title.canvasClean(brush);
-			isPlaying = true;
+			is2PPlaying = true;
 			isPauseScreen = false;
 		}
 	}
@@ -127,7 +127,7 @@ public class Pong extends GDV5 {
 			}
 		}
 
-		paddleMove(isPlaying);
+		paddleMove();
 
 		ball.update(this);
 		p1.update();
@@ -140,9 +140,9 @@ public class Pong extends GDV5 {
 		this.escapeToMenu(brush);
 		
 		if (isTitleScreen) {
-			if (!isHelpScreen && !isPlaying) {
+			if (!isHelpScreen && !is2PPlaying) {
 				title.drawTitle(brush);
-			} else if (isHelpScreen & !isPlaying) {
+			} else if (isHelpScreen & !is2PPlaying) {
 				title.displayControls(brush);
 			}
 		} else {
@@ -154,24 +154,25 @@ public class Pong extends GDV5 {
 					ball.draw(brush);
 					scoreboard.drawScore(brush, this);
 					scoreboard.drawWin(brush, this);
-				} else if (is1P && !isRScoreScreen) {
-					title.canvasClean(brush);
-					p1.draw(brush);
-					AIPaddle.teleportAndDraw(brush, ball, this);
-					ball.draw(brush);
-					scoreboard.drawRallyChallengePt(brush, this);
-					scoreboard.drawFinalScore(brush, this);
-				} else if (isRScoreScreen) {
-					title.canvasClean(brush);
-					scoreboard.drawFinalScore(brush, this);
-				}
+				} else if (is1P) {
+					if (!isRScoreScreen) {
+						title.canvasClean(brush);
+						p1.draw(brush);
+						AIPaddle.teleportAndDraw(brush, ball, this);
+						ball.draw(brush);
+						scoreboard.drawRallyChallengePt(brush, this);
+					} else {
+						scoreboard.drawFinalScore(brush, this, title);
+					}
+					
+				} 
 			}
 		}
 
 		/*
 		if (pauseGame(brush)) {
 			isPauseScreen = true;
-			isPlaying = false;
+			is2PPlaying = false;
 		}
 		unPause(brush);
 		if (isPauseScreen) {
