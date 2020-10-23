@@ -54,7 +54,7 @@ public class Paddle extends Rectangle {
 		if (inYRange) {
 			if (isAtFront) {
 				if (this.dy == 0) {
-					b.dx *= -1;
+					b.dx *= -1.15;
 				} else if (((this.dy > 0) && (b.dy > 0)) || ((this.dy < 0) && (b.dy < 0))) {
 					b.dx *= -1.2;
 					b.dy *= 1.5;
