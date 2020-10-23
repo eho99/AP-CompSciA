@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 
 public class TitleScreen {
 	final int PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
@@ -33,7 +31,7 @@ public class TitleScreen {
 		int textWidth = getTextWidth(brush, "PONG");
 		brush.drawString("PONG", (MAX_WINDOW_X / 2) - (textWidth / 2), 150);
 
-		String text = "Press 1 for Single Player";
+		String text = "Press 1 for Rally Challenge";
 		brush.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
 		textWidth = getTextWidth(brush, text);
 		brush.drawString(text, (MAX_WINDOW_X / 2) - (textWidth / 2), 440);

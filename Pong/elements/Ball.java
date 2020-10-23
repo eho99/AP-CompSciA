@@ -3,9 +3,7 @@ package elements;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.Random;
 
-import elements.Paddle;
 import pong.Pong;
 
 public class Ball extends Rectangle {

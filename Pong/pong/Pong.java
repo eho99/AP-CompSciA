@@ -48,18 +48,44 @@ public class Pong extends GDV5 {
 			} else if (KeysTyped[KeyEvent.VK_UP]) {
 				p2.dy = 0;
 			}
-		} else if (!isTitleScreen && !isWinScreen) {
+		} else if (!isTitleScreen && !isWinScreen && !is1P) {
 			p1.padReset();
 			p2.padReset();
-			if (KeysPressed[KeyEvent.VK_SPACE]) {
-				ball.setVel(this);
-
+			if (ball.isServingToRight) {
+				if (KeysPressed[KeyEvent.VK_UP] && KeysPressed[KeyEvent.VK_DOWN]) {
+					ball.setVel(this);
+				}
+			} else {
+				if (KeysPressed[KeyEvent.VK_W] && KeysPressed[KeyEvent.VK_S]) {
+					ball.setVel(this);
+				}
+				
 				// TEST SET SPEED
 				// ball.dx = -14;
 				// ball.dy = 0;
 
 			}
-		}
+		} else if (is1PPlaying) {
+			if (KeysPressed[KeyEvent.VK_S] || KeysPressed[KeyEvent.VK_DOWN]) {
+				p1.dy = 10;
+			} else if (KeysPressed[KeyEvent.VK_W] || KeysPressed[KeyEvent.VK_UP]) {
+				p1.dy = -10;
+			} else if (KeysTyped[KeyEvent.VK_S] || KeysTyped[KeyEvent.VK_DOWN]) {
+				p1.dy = 0;
+			} else if (KeysTyped[KeyEvent.VK_W] || KeysTyped[KeyEvent.VK_UP]) {
+				p1.dy = 0;
+			}
+		} else if (!isTitleScreen && !isRScoreScreen) {
+			p1.padReset();
+			p2.padReset();
+			if ((KeysPressed[KeyEvent.VK_UP] && KeysPressed[KeyEvent.VK_DOWN]) || (KeysPressed[KeyEvent.VK_W] && KeysPressed[KeyEvent.VK_S])) {
+					ball.setVel(this);
+				}
+			} 				
+				
+			// TEST SET SPEED
+			// ball.dx = -14;
+			// ball.dy = 0;
 
 		if (KeysPressed[KeyEvent.VK_R]) {
 			p1.padReset();
