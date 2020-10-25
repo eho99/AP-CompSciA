@@ -10,14 +10,14 @@ import utilities.GDV5;
 
 public class Pong extends GDV5 {
 	final int PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
-	public int p1Points = 0, p2Points = 0, rallyChallengePt = 0;
+	public int p1Points = 0, p2Points = 0, rallyChallengePt = 0, rallyHighScore = 0;
 
 	int sBallX = (MAX_WINDOW_X / 2) - 12, sBallY = 275, ballHeight = 25, ballWidth = 25;
 	int sLPadX = 10, sLPadY = 250 - PADDING, LPadHeight = 100, LPadWidth = 25;
 	int sRPadX = 775, sRPadY = 250 - PADDING, RPadHeight = 100, RPadWidth = 25;
 
 	public boolean is2PPlaying = false, is1PPlaying = false, isHelpScreen = false, isTitleScreen = true, is1P = false, is2P = false, isWinScreen = false,
-			isRScoreScreen = false, isPauseScreen = false;
+			isRScoreScreen = false, isPauseScreen = false, rallyFirstTime = true;
 
 	Ball ball = new Ball(sBallX, sBallY, ballHeight, ballWidth, 0, 0);
 	Paddle p1 = new Paddle(sLPadX, sLPadY, LPadHeight, LPadWidth, 0, 0);
@@ -129,7 +129,6 @@ public class Pong extends GDV5 {
 		}
 		return false;
 	}
-
 	public void unPause(Graphics2D brush) {
 		if (KeysPressed[KeyEvent.VK_U]) {
 			title.canvasClean(brush);
@@ -188,6 +187,10 @@ public class Pong extends GDV5 {
 						ball.draw(brush);
 						scoreboard.drawRallyChallengePt(brush, this);
 					} else {
+						if (rallyFirstTime) {
+							rallyHighScore = rallyChallengePt;
+							rallyFirstTime = false;
+						}
 						scoreboard.drawFinalScore(brush, this, title);
 					}
 					
