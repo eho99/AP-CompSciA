@@ -54,13 +54,25 @@ public class Scoreboard {
 		title.canvasClean(brush);
 		String finalPt = Integer.toString(p.rallyChallengePt);
 		String text = "You scored " + finalPt + " points!";
-
+		
 		if (!p.is1PPlaying && p.is1P) {
 			int textSize = 70;
 			brush.setColor(Color.WHITE);
-			brush.setFont(new Font("Trebuchet MS", Font.BOLD, 70));
+			brush.setFont(new Font("Trebuchet MS", Font.BOLD, textSize));
 			int width = getTextWidth(brush, text);
 			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 180);
+			
+			textSize = 25;
+			brush.setFont(new Font("Trebuchet MS", Font.BOLD, textSize));
+			if (p.rallyChallengePt > p.rallyHighScore) {
+				text = "You got a high score!";
+				width = getTextWidth(brush, text);
+				brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 240);
+			} else {
+				text = "Current high score: " + p.rallyHighScore;
+				width = getTextWidth(brush, text);
+				brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 240);
+			}
 
 			textSize = 30;
 			brush.setFont(new Font("Trebuchet MS", Font.PLAIN, textSize));
