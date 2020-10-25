@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 public class TitleScreen {
 	final int PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
+	final String fontStyle = "Trebuchet MS";
 
 	public void drawString(Graphics2D g, String text, int x, int y) {
 		for (String line : text.split("\n"))
@@ -27,12 +28,12 @@ public class TitleScreen {
 	public void drawTitle(Graphics2D brush) {
 		brush.setColor(Color.WHITE);
 
-		brush.setFont(new Font("Trebuchet MS", Font.BOLD, 100));
+		brush.setFont(new Font(fontStyle, Font.BOLD, 100));
 		int textWidth = getTextWidth(brush, "PONG");
 		brush.drawString("PONG", (MAX_WINDOW_X / 2) - (textWidth / 2), 150);
 
 		String text = "Press 1 for Rally Challenge";
-		brush.setFont(new Font("Trebuchet MS", Font.PLAIN, 25));
+		brush.setFont(new Font(fontStyle, Font.PLAIN, 25));
 		textWidth = getTextWidth(brush, text);
 		brush.drawString(text, (MAX_WINDOW_X / 2) - (textWidth / 2), 440);
 
@@ -50,7 +51,7 @@ public class TitleScreen {
 
 		int textSize = 40;
 		brush.setColor(Color.WHITE);
-		brush.setFont(new Font("Trebuchet MS", Font.BOLD, textSize));
+		brush.setFont(new Font(fontStyle, Font.BOLD, textSize));
 
 		String text = "How to Play:";
 
@@ -62,7 +63,7 @@ public class TitleScreen {
 		textWidth = getTextWidth(brush, text);
 		brush.drawString(text, ((MAX_WINDOW_X / 4) * 3) - (textWidth / 2), 100);
 
-		brush.setFont(new Font("Trebuchet MS", Font.PLAIN, textSize));
+		brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
 
 		text = "You and your opponent will move\npaddles and rally a ball back and forth.\nThe first to reach 11 points wins.";
 		textWidth = getTextWidth(brush, text);
@@ -81,7 +82,7 @@ public class TitleScreen {
 		this.drawString(brush, text, (MAX_WINDOW_X / 4) * 3 - (textWidth / 4), 220);
 
 		textSize = 30;
-		brush.setFont(new Font("Trebuchet MS", Font.PLAIN, textSize));
+		brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
 		text = "Press Escape to exit to Main Menu";
 		textWidth = getTextWidth(brush, text);
 		this.drawString(brush, text, (MAX_WINDOW_X / 2) - (textWidth / 2), 400);

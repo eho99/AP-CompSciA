@@ -9,11 +9,12 @@ import java.awt.Rectangle;
 
 public class Scoreboard {
 	final int PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
+	final String fontStyle = "Trebuchet MS";
 	TitleScreen title = new TitleScreen();
 
 	public void drawString(Graphics2D g, String text, int x, int y) {
 		for (String line : text.split("\n"))
-			g.drawString(line, x, y += g.getFontMetrics().getHeight());
+			g.drawString(line, x, (y += g.getFontMetrics().getHeight()));
 	}
 
 	public int getTextWidth(Graphics2D obj, String text) {
@@ -28,7 +29,7 @@ public class Scoreboard {
 		String p2Points = Integer.toString(p.p2Points);
 
 		brush.setColor(Color.WHITE);
-		brush.setFont(new Font("Trebuchet MS", Font.BOLD, 100));
+		brush.setFont(new Font(fontStyle, Font.BOLD, 100));
 		int width = getTextWidth(brush, p1Points);
 		brush.drawString(p1Points, (MAX_WINDOW_X / 4) - (width / 2), 100);
 		width = getTextWidth(brush, p1Points);
@@ -45,7 +46,7 @@ public class Scoreboard {
 		brush.fill(blackBox);
 
 		brush.setColor(Color.WHITE);
-		brush.setFont(new Font("Trebuchet MS", Font.BOLD, 100));
+		brush.setFont(new Font(fontStyle, Font.BOLD, 100));
 		width = getTextWidth(brush, rallyChallengePt);
 		brush.drawString(rallyChallengePt, ((MAX_WINDOW_X / 2) - (width / 2)), 100);
 	}
@@ -58,12 +59,12 @@ public class Scoreboard {
 		if (!p.is1PPlaying && p.is1P) {
 			int textSize = 70;
 			brush.setColor(Color.WHITE);
-			brush.setFont(new Font("Trebuchet MS", Font.BOLD, textSize));
+			brush.setFont(new Font(fontStyle, Font.BOLD, textSize));
 			int width = getTextWidth(brush, text);
 			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 180);
 			
 			textSize = 25;
-			brush.setFont(new Font("Trebuchet MS", Font.BOLD, textSize));
+			brush.setFont(new Font(fontStyle, Font.BOLD, textSize));
 			if (p.rallyChallengePt > p.rallyHighScore) {
 				text = "You got a high score!";
 				width = getTextWidth(brush, text);
@@ -75,7 +76,7 @@ public class Scoreboard {
 			}
 
 			textSize = 30;
-			brush.setFont(new Font("Trebuchet MS", Font.PLAIN, textSize));
+			brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
 			text = "Press Escape to exit to Main Menu";
 			width = getTextWidth(brush, text);
 			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 440);
@@ -89,12 +90,12 @@ public class Scoreboard {
 		if (p.p1Points == 11) {
 			title.canvasClean(brush);
 			text = "Player 1 has won!";
-			brush.setFont(new Font("Trebuchet MS", Font.BOLD, 90));
+			brush.setFont(new Font(fontStyle, Font.BOLD, 90));
 			width = getTextWidth(brush, text);
 			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 200);
 
 			int textSize = 30;
-			brush.setFont(new Font("Trebuchet MS", Font.PLAIN, textSize));
+			brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
 			text = "Press Escape to exit to Main Menu";
 			width = getTextWidth(brush, text);
 			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 400);
@@ -102,12 +103,12 @@ public class Scoreboard {
 		} else if (p.p2Points == 11) {
 			title.canvasClean(brush);
 			text = "Player 2 has won!";
-			brush.setFont(new Font("Trebuchet MS", Font.BOLD, 90));
+			brush.setFont(new Font(fontStyle, Font.BOLD, 90));
 			width = getTextWidth(brush, text);
 			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 200);
 
 			int textSize = 30;
-			brush.setFont(new Font("Trebuchet MS", Font.PLAIN, textSize));
+			brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
 			text = "Press Escape to exit to Main Menu";
 			width = getTextWidth(brush, text);
 			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 400);
@@ -120,9 +121,8 @@ public class Scoreboard {
 		int width;
 
 		text = "Game is paused\nPress U to unpause";
-		brush.setFont(new Font("Trebuchet MS", Font.BOLD, 50));
+		brush.setFont(new Font(fontStyle, Font.BOLD, 50));
 		width = getTextWidth(brush, text);
 		brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 3), 150);
-		// this.drawString(brush, text, (MAX_WINDOW_X / 2) - (width / 3), 150);
 	}
 }

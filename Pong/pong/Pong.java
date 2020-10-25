@@ -167,7 +167,7 @@ public class Pong extends GDV5 {
 		if (isTitleScreen) {
 			if (!isHelpScreen && !is2PPlaying) {
 				title.drawTitle(brush);
-			} else if (isHelpScreen & !is2PPlaying) {
+			} else if (isHelpScreen && !is2PPlaying) {
 				title.displayControls(brush);
 			}
 		} else {
