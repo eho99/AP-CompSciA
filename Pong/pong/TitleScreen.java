@@ -68,11 +68,11 @@ public class TitleScreen {
 		textWidth = getTextWidth(brush, text);
 		this.drawString(brush, text, (MAX_WINDOW_X / 4) - (textWidth / 6), 150);
 		
-		text = "Press space to start each rally.";
+		text = "Press both of the respective\nmovement keys to start each rally.";
 		textWidth = getTextWidth(brush, text);
-		this.drawString(brush, text, (MAX_WINDOW_X / 4) - (textWidth / 2), 250);
+		this.drawString(brush, text, (MAX_WINDOW_X / 4) - (textWidth / 4), 250);
 
-		text = "Left Paddle: Use W and S \n to move up and down.";
+		text = "Left Paddle: Use W and S\nto move up and down.";
 		textWidth = getTextWidth(brush, text);
 		this.drawString(brush, text, (MAX_WINDOW_X / 4) * 3 - (textWidth / 4), 150);
 
