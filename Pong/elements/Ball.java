@@ -123,8 +123,6 @@ public class Ball extends Rectangle {
 		Rectangle centerLine = new Rectangle((MAX_WINDOW_X / 2), 0, 1, 600);
 		brush.draw(centerLine);
 		brush.fill(centerLine);
-	}
-	
-	
+	}	
 
 }
