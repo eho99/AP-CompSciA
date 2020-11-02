@@ -5,13 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Paddle extends Rectangle {
-	final int PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
+	final int STARTING_X, STARTING_Y, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
 	public int dx, dy;
 	public int isMovingUp = 0;
 
-	// Rectangle p1 = new Rectangle(x, y, height, width);
-	final int STARTING_X, STARTING_Y;
-
+	// Paddle constructor to be defined in other classes
 	public Paddle(int x, int y, int height, int width, int dx, int dy) {
 		super(x, y, height, width);
 		this.x = x;
@@ -25,7 +23,7 @@ public class Paddle extends Rectangle {
 		STARTING_Y = y;
 	}
 
-	// Resets paddle location at end of round
+	// Resets paddle location at end of a rally
 	public void padReset() {
 		this.setLocation(STARTING_X, STARTING_Y);
 		this.dy = 0;
@@ -48,8 +46,6 @@ public class Paddle extends Rectangle {
 				&& (b.dx < 0))
 				|| (((b.getMaxX() <= this.getCenterX()) && b.getMaxX() >= MAX_WINDOW_X - this.width) && (b.dx > 0));
 
-		// Check in front of the ball, multiply by constant to check for fps
-
 		if (inYRange) {
 			if (isAtFront) {
 				if (this.dy == 0) {
@@ -63,16 +59,17 @@ public class Paddle extends Rectangle {
 					if (Math.abs(b.dy) < 2) {
 						b.dy = 2;
 					}
-					//got stuck on bottom floor
 				}
 			}
 		}
 	}
 
+	// calls movement
 	public void update() {
 		move();
 	}
 
+	// Draws paddle object
 	public void draw(Graphics2D win) {
 		Color padClr = Color.white;
 

@@ -18,7 +18,7 @@ public class Scoreboard {
 			g.drawString(line, x, (y += g.getFontMetrics().getHeight()));
 	}
 
-	// get width of the text 
+	// Get width of the text 
 	public int getTextWidth(Graphics2D obj, String text) {
 		Font f = obj.getFont();
 		FontMetrics fm = obj.getFontMetrics(f);
@@ -28,114 +28,140 @@ public class Scoreboard {
 
 	// Draw 2P points
 	public void drawScore(Graphics2D brush, Pong p) {
-		String p1Points = Integer.toString(p.p1Points);
-		String p2Points = Integer.toString(p.p2Points);
-
 		brush.setColor(Color.WHITE);
 		brush.setFont(new Font(fontStyle, Font.BOLD, 100));
-		int width = getTextWidth(brush, p1Points);
-		brush.drawString(p1Points, (MAX_WINDOW_X / 4) - (width / 2), 100);
-		width = getTextWidth(brush, p2Points);
-		brush.drawString(p2Points, ((MAX_WINDOW_X / 4) * 3) - (width / 2), 100);
+		String p1Points = Integer.toString(p.p1Points);
+		String p2Points = Integer.toString(p.p2Points);
+		int textWidth, alignment, yLevel;
+
+		yLevel = 100;
+		textWidth = getTextWidth(brush, p1Points);
+		alignment = (MAX_WINDOW_X / 4) - (textWidth / 2);
+		brush.drawString(p1Points, alignment, yLevel);
+
+		textWidth = getTextWidth(brush, p2Points);
+		alignment = ((MAX_WINDOW_X / 4) * 3) - (textWidth / 2);
+		brush.drawString(p2Points, alignment, yLevel);
 	}
 
 	// Draw 1P points
 	public void drawRallyChallengePt(Graphics2D brush, Pong p) {
 		String rallyChallengePt = Integer.toString(p.rallyChallengePt);
-		int width = getTextWidth(brush, rallyChallengePt);
+		int textWidth, centerAlignment, yLevel;
+		textWidth = getTextWidth(brush, rallyChallengePt);
+		centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
 
+		yLevel = 120;
 		brush.setColor(Color.BLACK);
-		Rectangle blackBox = new Rectangle((MAX_WINDOW_X / 2) - (width / 2), 0, width, 120);
+		Rectangle blackBox = new Rectangle(centerAlignment, 0, textWidth, yLevel);
 		brush.draw(blackBox);
 		brush.fill(blackBox);
 
+		yLevel = 100;
 		brush.setColor(Color.WHITE);
 		brush.setFont(new Font(fontStyle, Font.BOLD, 100));
-		width = getTextWidth(brush, rallyChallengePt);
-		brush.drawString(rallyChallengePt, ((MAX_WINDOW_X / 2) - (width / 2)), 100);
+		textWidth = getTextWidth(brush, rallyChallengePt);
+		centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+		brush.drawString(rallyChallengePt, centerAlignment, yLevel);
 	}
 
 	// Display final score
 	public void drawFinalScore(Graphics2D brush, Pong p, TitleScreen title) {
 		title.canvasClean(brush);
-		
-		if (p.rallyChallengePt >= 50) {
-			p.ball.ballClr = new Color(212,175,55); // Sets color of the ball to gold for 50 rallies
-			// p.ball.ballClr = new Color(255, 255, 0);
-		}
+		int textSize, centerAlignment, textWidth, yLevel;
+		String text;
 		
 		String finalPt = Integer.toString(p.rallyChallengePt);
-		String text = "You scored " + finalPt + " points!";
+		text = "You scored " + finalPt + " points!";
 		
+		// Checks for ongoing rally
 		if (!p.is1PPlaying && p.is1P) {
-			int textSize = 70;
+			textSize = 70;
+			yLevel = 180;
 			brush.setColor(Color.WHITE);
 			brush.setFont(new Font(fontStyle, Font.BOLD, textSize));
-			int width = getTextWidth(brush, text);
-			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 180);
+			textWidth = getTextWidth(brush, text);
+			centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+			brush.drawString(text, centerAlignment, yLevel);
 			
+			yLevel = 240;
 			textSize = 25;
 			brush.setFont(new Font(fontStyle, Font.BOLD, textSize));
+
 			if (p.rallyChallengePt > p.rallyHighScore) {
 				text = "You got a high score!";
-				width = getTextWidth(brush, text);
-				brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 240);
+				textWidth = getTextWidth(brush, text);
+				centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+				brush.drawString(text, centerAlignment, yLevel);
 			} else {
 				text = "Current high score: " + p.rallyHighScore;
-				width = getTextWidth(brush, text);
-				brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 240);
+				textWidth = getTextWidth(brush, text);
+				centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+				brush.drawString(text, centerAlignment, yLevel);
 			}
 
 			textSize = 30;
-			brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
+			yLevel = 440;
 			text = "Press Escape to exit to Main Menu";
-			width = getTextWidth(brush, text);
-			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 440);
+			brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
+			textWidth = getTextWidth(brush, text);
+			centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+			brush.drawString(text, centerAlignment, yLevel);
+
+			if (p.rallyChallengePt >= 50) {
+				p.ball.ballClr = new Color(255, 223, 0); // Sets color of the ball to gold for 50 rallies
+
+				yLevel = 320;
+				text = "You have unlocked the golden ball!";
+				textWidth = getTextWidth(brush, text);
+				centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+				brush.drawString(text, centerAlignment, yLevel);
+			}
 		}
 	}
 
 	// Draw win screen
 	public void drawWin(Graphics2D brush, Pong p) {
+		int textWidth, centerAlignment, yLevel, textSize;
 		String text;
-		int width;
-
+	
+		// Checks for win condition and draws respective text
 		if (p.p1Points == 11) {
 			title.canvasClean(brush);
+			yLevel = 200;
+			textSize = 90;
 			text = "Player 1 has won!";
-			brush.setFont(new Font(fontStyle, Font.BOLD, 90));
-			width = getTextWidth(brush, text);
-			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 200);
+			brush.setFont(new Font(fontStyle, Font.BOLD, textSize));
+			textWidth = getTextWidth(brush, text);
+			centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+			brush.drawString(text, centerAlignment, yLevel);
 
-			int textSize = 30;
+			yLevel = 400;
+			textSize = 30;
 			brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
 			text = "Press Escape to exit to Main Menu";
-			width = getTextWidth(brush, text);
-			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 400);
+			textWidth = getTextWidth(brush, text);
+			centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+			brush.drawString(text, centerAlignment, yLevel);
 			p.isWinScreen = true;
 		} else if (p.p2Points == 11) {
 			title.canvasClean(brush);
+			yLevel = 200;
+			textSize = 90;
 			text = "Player 2 has won!";
-			brush.setFont(new Font(fontStyle, Font.BOLD, 90));
-			width = getTextWidth(brush, text);
-			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 200);
+			brush.setFont(new Font(fontStyle, Font.BOLD, textSize));
+			textWidth = getTextWidth(brush, text);
+			centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+			brush.drawString(text, centerAlignment, yLevel);
 
-			int textSize = 30;
+			yLevel = 400;
+			textSize = 30;
 			brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
 			text = "Press Escape to exit to Main Menu";
-			width = getTextWidth(brush, text);
-			brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 2), 400);
+			textWidth = getTextWidth(brush, text);
+			centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
+			brush.drawString(text, centerAlignment, yLevel);
 			p.isWinScreen = true;
 		}
-	}
-
-	// TBD Implemented
-	public void drawPause(Graphics2D brush) {
-		String text;
-		int width;
-
-		text = "Game is paused\nPress U to unpause";
-		brush.setFont(new Font(fontStyle, Font.BOLD, 50));
-		width = getTextWidth(brush, text);
-		brush.drawString(text, (MAX_WINDOW_X / 2) - (width / 3), 150);
 	}
 }

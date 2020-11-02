@@ -106,7 +106,7 @@ public class Pong extends GDV5 {
 			}
 		}
 
-		// GLOBAL RESET TESTING KEY
+		// GLOBAL RESET TESTING KEY - NOT FOR USE BY PLAYERS
 		if (KeysPressed[KeyEvent.VK_R]) {
 			p1.padReset();
 			p2.padReset();
@@ -124,18 +124,9 @@ public class Pong extends GDV5 {
 		return false;
 	}
 
-	/*
-	 * TBD Implemented - PAUSE FEATURES
-	 * 
-	 * public boolean pauseGame(Graphics2D brush) { if (is2PPlaying &&
-	 * !isTitleScreen) { if (KeysPressed[KeyEvent.VK_P]) { return true; } } return
-	 * false; } public void unPause(Graphics2D brush) { if
-	 * (KeysPressed[KeyEvent.VK_U]) { title.canvasClean(brush); is2PPlaying = true;
-	 * isPauseScreen = false; } }
-	 */
-
 	// Movement and Menu Key Detection
 	public void update() {
+		// Checks ball and paddle collision for both paddles
 		p1.ballPadCol(ball);
 		p2.ballPadCol(ball);
 
@@ -159,8 +150,9 @@ public class Pong extends GDV5 {
 
 	// Draw all Graphics
 	public void draw(Graphics2D brush) {
-		if (showHelp())
+		if (showHelp()) {
 			isHelpScreen = true;
+		}
 		this.escapeToMenu(brush);
 
 		if (isTitleScreen) {
@@ -171,6 +163,7 @@ public class Pong extends GDV5 {
 			}
 		} else {
 			if (!isHelpScreen && !isPauseScreen) {
+				// Checks if two player or one player
 				if (is2P) {
 					title.canvasClean(brush);
 					p1.draw(brush);
@@ -179,10 +172,11 @@ public class Pong extends GDV5 {
 					scoreboard.drawScore(brush, this);
 					scoreboard.drawWin(brush, this);
 				} else if (is1P) {
+					// Checks if rally is in play
 					if (!isRScoreScreen) {
 						title.canvasClean(brush);
 						p1.draw(brush);
-						AIPaddle.teleportAndDraw(brush, ball, this);
+						AIPaddle.trackAndDraw(brush, ball, this);
 						ball.draw(brush);
 						scoreboard.drawRallyChallengePt(brush, this);
 					} else {
@@ -192,21 +186,13 @@ public class Pong extends GDV5 {
 						}
 						scoreboard.drawFinalScore(brush, this, title);
 					}
-
 				}
 			}
 		}
-
-		/*
-		 * if (pauseGame(brush)) { isPauseScreen = true; is2PPlaying = false; }
-		 * unPause(brush); if (isPauseScreen) { title.canvasClean(brush);
-		 * scoreboard.drawPause(brush); }
-		 */
 	}
 
 	public static void main(String[] args) {
 		Pong pongGame = new Pong();
-
 		pongGame.start();
 	}
 

@@ -7,11 +7,12 @@ import java.awt.Rectangle;
 import pong.Pong;
 
 public class Ball extends Rectangle {
-	public int dx, dy; // Upper Bound is 14
-	public boolean isServingToRight; 
+	public int dx, dy; // Upper Bound is 14, lower bound for y is 2
+	public boolean isServingToRight;
 
-	final int x_start, y_start, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;;
+	final int STARTING_X, STARTING_Y, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;;
 
+	// Ball constructor to be defined in other classes
 	public Ball(int x, int y, int height, int width, int dx, int dy) {
 		super(x, x, height, width);
 		this.x = x;
@@ -21,25 +22,16 @@ public class Ball extends Rectangle {
 		this.dx = dx;
 		this.dy = dy;
 
-		x_start = x;
-		y_start = y;
+		STARTING_X = x;
+		STARTING_Y = y;
 	}
 
 	// Reset ball to center
 	public void ballReset(Pong p) {
-		this.setLocation(x_start, y_start);
+		this.setLocation(STARTING_X, STARTING_Y);
 		this.dx = 0;
 		this.dy = 0;
 		p.is2PPlaying = false;
-	}
-
-	// Shatter Animation for Ball hitting side wall?
-	public void ballShatter(Graphics2D brush) {
-		for (int x = (int) this.getMinX(); x <= this.getMaxX(); x += 5) {
-			for (int y = (int) this.getMinY(); y <= this.getMaxY(); y += 5) {
-				brush.drawRect(x, y, 5, 5);
-			}
-		}
 	}
 
 	// Gets random speed
@@ -61,27 +53,16 @@ public class Ball extends Rectangle {
 		dx = getSpeed() * getDir();
 		dy = getSpeed() * getDir();
 
-		if (isServingToRight == false) {
-			if (dx > 0)
-				dx *= -1;
-		} else if (isServingToRight == true) {
+		if (isServingToRight) {
 			if (dx < 0)
+				dx *= -1;
+		} else {
+			if (dx > 0)
 				dx *= -1;
 		}
 
 		p.is2PPlaying = true;
 	}
-
-	/*
-	 * BALL-PADDLE COLLISION INTERACTIONS 1. Check if ball hits middle or side 1a)
-	 * if middle, perfect reflection following law of reflection, regular speed 1b)
-	 * If side, off shoot angle at more extreme 1c) if direction of movement of the
-	 * paddle is same as ball, increase speed, if its opposite, decrease speed 2.
-	 * Start at a slower speed and increase over time 2a) Implement a counter
-	 * tracking the number of times a ball has hit the paddle, at certain intervals,
-	 * randomly increase MIN SPEED
-	 * 
-	 */
 
 	// Checks ball collision for window edges
 	public void ballBounce(Pong p) {
@@ -96,11 +77,11 @@ public class Ball extends Rectangle {
 			isServingToRight = true;
 			p.isRScoreScreen = true;
 		}
-		
+
 		boolean checkBounce = (this.getMinY() <= 0) || (this.getMaxY() >= MAX_WINDOW_Y);
 		if (checkBounce) {
 			dy *= -1;
-		} 
+		}
 	}
 
 	// Ball movement
@@ -119,16 +100,17 @@ public class Ball extends Rectangle {
 		ballBounce(p);
 	}
 
-	// Draws specifically for ball
+	// Draws ball and center line
 	public Color ballClr = Color.white;
+
 	public void draw(Graphics2D brush) {
 		Rectangle centerLine = new Rectangle((MAX_WINDOW_X / 2), 0, 1, 600);
 		brush.setColor(Color.white);
 		brush.draw(centerLine);
 		brush.fill(centerLine);
-		
+
 		brush.setColor(ballClr);
 		brush.fill(this);
-	}	
+	}
 
 }
