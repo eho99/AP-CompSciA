@@ -3,12 +3,12 @@ package elements;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import utilities.*;
 
 public class Ball extends Rectangle {
-	public int dx, dy; // Upper Bound is 14, lower bound for y is 2
-	public boolean isServingToRight;
+	private double dx, dy; // Upper Bound is 14, lower bound for y is 2
 
-	final int STARTING_X, STARTING_Y, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;;
+	final int STARTING_X, STARTING_Y, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(), MAX_WINDOW_Y = GDV5.getMaxWindowY();
 
 	// Ball constructor to be defined in other classes
 	public Ball(int x, int y, int height, int width, int dx, int dy) {
@@ -25,11 +25,10 @@ public class Ball extends Rectangle {
 	}
 
 	// Reset ball to center
-	public void ballReset(Pong p) {
+	public void ballReset() {
 		this.setLocation(STARTING_X, STARTING_Y);
 		this.dx = 0;
 		this.dy = 0;
-		p.is2PPlaying = false;
 	}
 
 	// Gets random speed
@@ -47,68 +46,65 @@ public class Ball extends Rectangle {
 	}
 
 	// Sets velocity by multiplying speed and direction
-	public void setVel(Pong p) {
-		dx = getSpeed() * getDir();
-		dy = getSpeed() * getDir();
-
-		if (isServingToRight) {
-			if (dx < 0)
-				dx *= -1;
-		} else {
-			if (dx > 0)
-				dx *= -1;
-		}
-
-		p.is2PPlaying = true;
+	public void setVel() {
+		this.dx = getSpeed() * getDir();
+		this.dy = getSpeed() * -1; // Breakout always starts moving up
 	}
 
 	// Checks ball collision for window edges
-	public void ballBounce(Pong p) {
+	public void ballBounce() {
 		if (this.getMaxX() > MAX_WINDOW_X) {
-			ballReset(p);
-			p.p1Points += 1;
-			isServingToRight = false;
-			p.isRScoreScreen = true;
+			ballReset();
 		} else if (this.getX() < 0) {
-			ballReset(p);
-			p.p2Points += 1;
-			isServingToRight = true;
-			p.isRScoreScreen = true;
+			ballReset();
 		}
 
 		boolean checkBounce = (this.getMinY() <= 0) || (this.getMaxY() >= MAX_WINDOW_Y);
+		
 		if (checkBounce) {
-			dy *= -1;
+			this.dy = this.dy * -1;
 		}
 	}
 
 	// Ball movement
-	public void update(Pong p) {
-		if (dx < -14)
-			dx = -14;
-		else if (dx > 14)
-			dx = 14;
+	public void update() {
+		if (this.dx < -14)
+			this.dy = -14;
+		else if (this.dx > 14)
+			this.dx = 14;
 
-		if (dy < -14)
-			dy = -14;
-		else if (dx > 14)
-			dy = 14;
+		if (this.dy < -14)
+			this.dy = -14;
+		else if (this.dx > 14)
+			this.dy = 14;
 
-		this.translate(dx, dy);
-		ballBounce(p);
+		this.translate((int) this.dx, (int) this.dy);
+		ballBounce();
 	}
 
-	// Draws ball and center line
-	public Color ballClr = Color.white;
+	// Draws ball
 
 	public void draw(Graphics2D brush) {
-		Rectangle centerLine = new Rectangle((MAX_WINDOW_X / 2), 0, 1, 600);
-		brush.setColor(Color.white);
-		brush.draw(centerLine);
-		brush.fill(centerLine);
-
+		Color ballClr = Color.white;
 		brush.setColor(ballClr);
 		brush.fill(this);
+	}
+
+	// Accessor Methods
+	public double getDx() {
+		return dx;
+	}
+
+	public void setDx(double dx) {
+		this.dx = dx;
+	}
+
+	public double getDy() {
+		return dy;
+	}
+
+	public void setDy(double dy) {
+		this.dy = dy;
 	}
 
 }

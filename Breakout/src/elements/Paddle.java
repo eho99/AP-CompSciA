@@ -5,8 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class Paddle extends Rectangle {
+	private int xPos, yPos;
 	final int STARTING_X, STARTING_Y, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
-	public int dx, dy;
+	private int dx, dy;
 	public int isMovingUp = 0;
 
 	// Paddle constructor to be defined in other classes
@@ -19,13 +20,15 @@ public class Paddle extends Rectangle {
 		this.dx = dx;
 		this.dy = dy;
 
-		STARTING_X = x;
-		STARTING_Y = y;
+		this.STARTING_X = x;
+		this.STARTING_Y = y;
+		xPos = x;
+		yPos = y;
 	}
 
 	// Resets paddle location at end of a rally
 	public void padReset() {
-		this.setLocation(STARTING_X, STARTING_Y);
+		this.setLocation(xPos, yPos);
 		this.dy = 0;
 	}
 
@@ -43,21 +46,22 @@ public class Paddle extends Rectangle {
 	public void ballPadCol(Ball b) {
 		boolean inYRange = (b.getMaxY() >= this.getMinY()) && (b.getMinY() <= this.getMaxY());
 		boolean isAtFront = (((b.getMinX() >= this.getCenterX()) && (b.getMinX() <= PADDING + this.width))
-				&& (b.dx < 0))
-				|| (((b.getMaxX() <= this.getCenterX()) && b.getMaxX() >= MAX_WINDOW_X - this.width) && (b.dx > 0));
+				&& (b.getDx() < 0))
+				|| (((b.getMaxX() <= this.getCenterX()) && b.getMaxX() >= MAX_WINDOW_X - this.width)
+						&& (b.getDx() > 0));
 
 		if (inYRange) {
 			if (isAtFront) {
 				if (this.dy == 0) {
-					b.dx *= -1.15;
-				} else if (((this.dy > 0) && (b.dy > 0)) || ((this.dy < 0) && (b.dy < 0))) {
-					b.dx *= -1.2;
-					b.dy *= 1.5;
-				} else if (((this.dy < 0) && (b.dy > 0)) || ((this.dy > 0) && (b.dy < 0))) {
-					b.dx *= -1.35;
-					b.dy *= -0.86;
-					if (Math.abs(b.dy) < 2) {
-						b.dy = 2;
+					b.setDx(b.getDx() * -1.15);
+				} else if (((this.dy > 0) && (b.getDy() > 0)) || ((this.dy < 0) && (b.getDy() < 0))) {
+					b.setDx(b.getDx() * -1.2);
+					b.setDy(b.getDy() * 1.5);
+				} else if (((this.dy < 0) && (b.getDy() > 0)) || ((this.dy > 0) && (b.getDy() < 0))) {
+					b.setDx(b.getDx() * -1.35);
+					b.setDy(b.getDy() * -0.86);
+					if (Math.abs(b.getDy()) < 2) {
+						b.setDy(2);
 					}
 				}
 			}
