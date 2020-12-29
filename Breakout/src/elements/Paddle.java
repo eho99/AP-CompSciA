@@ -4,81 +4,53 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import utilities.GDV5;
+
 public class Paddle extends Rectangle {
-	private int xPos, yPos;
-	final int STARTING_X, STARTING_Y, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
-	private int dx, dy;
-	public int isMovingUp = 0;
+    private int xPos, yPos, dx, dy;
+    final int PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
 
-	// Paddle constructor to be defined in other classes
-	public Paddle(int x, int y, int height, int width, int dx, int dy) {
-		super(x, y, height, width);
-		this.x = x;
-		this.y = y;
-		this.height = height;
-		this.width = width;
-		this.dx = dx;
-		this.dy = dy;
+    // Paddle constructor to be defined in other classes
+    public Paddle(int x, int y, int height, int width) {
+        super(x, y, height, width);
+        this.x = x;
+        this.y = y;
+        this.height = height;
+        this.width = width;
 
-		this.STARTING_X = x;
-		this.STARTING_Y = y;
-		xPos = x;
-		yPos = y;
-	}
+        xPos = x;
+        yPos = y;
+    }
 
-	// Resets paddle location at end of a rally
-	public void padReset() {
-		this.setLocation(xPos, yPos);
-		this.dy = 0;
-	}
+    // Moves the paddle and checks for edge
+    public void move() {
+        this.translate(dx, dy);
+        if (this.getMinY() < MIN_WINDOW) {
+            this.setLocation(x, 0);
+        } else if (this.getMaxY() > MAX_WINDOW_Y) {
+            this.setLocation(x, MAX_WINDOW_Y - this.height);
+        }
+    }
 
-	// Moves the paddle and checks for edge
-	public void move() {
-		this.translate(dx, dy);
-		if (this.getMinY() < MIN_WINDOW) {
-			this.setLocation(x, 0);
-		} else if (this.getMaxY() > MAX_WINDOW_Y) {
-			this.setLocation(x, MAX_WINDOW_Y - this.height);
-		}
-	}
+    // Checks for ball paddle collision
+    public void ballBrickCol(Ball b) {
+        if (this.intersects(b)) {
+            if (GDV5.collisionDirection(this, b, b.getDx(), b.getDy()) == 1) {
+                int newDy = -1 * b.getDy();
+                b.setDy(newDy);
+            } else {
+                System.out.println("past");
+            }
 
-	// Checks for ball paddle collision
-	public void ballPadCol(Ball b) {
-		boolean inYRange = (b.getMaxY() >= this.getMinY()) && (b.getMinY() <= this.getMaxY());
-		boolean isAtFront = (((b.getMinX() >= this.getCenterX()) && (b.getMinX() <= PADDING + this.width))
-				&& (b.getDx() < 0))
-				|| (((b.getMaxX() <= this.getCenterX()) && b.getMaxX() >= MAX_WINDOW_X - this.width)
-						&& (b.getDx() > 0));
+            /*
+             * if (GDV5.collisionDirection(this, b, b.getDx(), b.getDy()) == 0 ||
+             * GDV5.collisionDirection(this, b, b.getDx(), b.getDy()) == 2) { // intersects
+             * from right/left int newDx = -1 * b.getDx(); b.setDx(newDx); } else if
+             * (GDV5.collisionDirection(this, b, b.getDx(), b.getDy()) == 1) { // intersects
+             * from top int newDy = -1 * b.getDy(); b.setDy(newDy); }
+             */
+        }
 
-		if (inYRange) {
-			if (isAtFront) {
-				if (this.dy == 0) {
-					b.setDx(b.getDx() * -1.15);
-				} else if (((this.dy > 0) && (b.getDy() > 0)) || ((this.dy < 0) && (b.getDy() < 0))) {
-					b.setDx(b.getDx() * -1.2);
-					b.setDy(b.getDy() * 1.5);
-				} else if (((this.dy < 0) && (b.getDy() > 0)) || ((this.dy > 0) && (b.getDy() < 0))) {
-					b.setDx(b.getDx() * -1.35);
-					b.setDy(b.getDy() * -0.86);
-					if (Math.abs(b.getDy()) < 2) {
-						b.setDy(2);
-					}
-				}
-			}
-		}
-	}
-
-	// calls movement
-	public void update() {
-		move();
-	}
-
-	// Draws paddle object
-	public void draw(Graphics2D win) {
-		Color padClr = Color.white;
-
-		win.setColor(padClr);
-		win.fill(this);
-	}
+    }
 
 }
