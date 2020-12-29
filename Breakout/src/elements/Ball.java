@@ -6,9 +6,10 @@ import java.awt.Rectangle;
 import utilities.*;
 
 public class Ball extends Rectangle {
-	private double dx, dy; // Upper Bound is 14, lower bound for y is 2
+	private int dx, dy; // Upper Bound is 14, lower bound for y is 2
 
-	final int STARTING_X, STARTING_Y, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(), MAX_WINDOW_Y = GDV5.getMaxWindowY();
+	final int STARTING_X, STARTING_Y, PADDING = 10, MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
+			MAX_WINDOW_Y = GDV5.getMaxWindowY();
 
 	// Ball constructor to be defined in other classes
 	public Ball(int x, int y, int height, int width, int dx, int dy) {
@@ -53,16 +54,15 @@ public class Ball extends Rectangle {
 
 	// Checks ball collision for window edges
 	public void ballBounce() {
-		if (this.getMaxX() > MAX_WINDOW_X) {
-			ballReset();
-		} else if (this.getX() < 0) {
-			ballReset();
+		boolean checkBounce = (this.getMinY() <= 0) || (this.getMaxY() >= MAX_WINDOW_Y);
+
+		if ((this.getMaxX() > MAX_WINDOW_X) || (this.getX() < 0)) {
+			// ballReset();
+			this.dx *= -1;
 		}
 
-		boolean checkBounce = (this.getMinY() <= 0) || (this.getMaxY() >= MAX_WINDOW_Y);
-		
 		if (checkBounce) {
-			this.dy = this.dy * -1;
+			this.dy *= -1;
 		}
 	}
 
@@ -91,19 +91,19 @@ public class Ball extends Rectangle {
 	}
 
 	// Accessor Methods
-	public double getDx() {
+	public int getDx() {
 		return dx;
 	}
 
-	public void setDx(double dx) {
+	public void setDx(int dx) {
 		this.dx = dx;
 	}
 
-	public double getDy() {
+	public int getDy() {
 		return dy;
 	}
 
-	public void setDy(double dy) {
+	public void setDy(int dy) {
 		this.dy = dy;
 	}
 

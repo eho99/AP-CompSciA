@@ -32,8 +32,8 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 
 	private int FramesPerSecond;
 	public static boolean[] KeysPressed;
-	private static final int MAX_WINDOW_X = 600;
-	private static final int MAX_WINDOW_Y = 600;
+	private static int MAX_WINDOW_X = 1000;
+	private static int MAX_WINDOW_Y = 750;
 
 	// it is your responsibility to handle the release on keysTyped
 	public static boolean[] KeysTyped;
@@ -129,7 +129,7 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 
 			changeInSeconds += (now - lastTime) / nanoSecondConversion;
 			while (changeInSeconds >= 1) {
-				update(); 
+				update();
 				changeInSeconds--;
 			}
 
@@ -216,13 +216,21 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 	public void setCleanCanvas(boolean option) {
 		this.cleanCanvas = option;
 	}
-	
+
 	public static int getMaxWindowX() {
 		return MAX_WINDOW_X;
 	}
-	
+
 	public static int getMaxWindowY() {
 		return MAX_WINDOW_Y;
+	}
+
+	public static void setMaxWindowX(int sizeX) {
+		MAX_WINDOW_X = sizeX;
+	}
+
+	public static void setMaxWindowY(int sizeY) {
+		MAX_WINDOW_Y = sizeY;
 	}
 
 }
