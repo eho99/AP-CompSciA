@@ -34,6 +34,7 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 	public static boolean[] KeysPressed;
 	private static int MAX_WINDOW_X = 1000;
 	private static int MAX_WINDOW_Y = 750;
+	private static int PADDING = 2;
 
 	// it is your responsibility to handle the release on keysTyped
 	public static boolean[] KeysTyped;
@@ -189,7 +190,7 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 		int width = (int) projectile.getWidth();
 		int result = 0; // default intersects from right
 
-		if (previousYPos + height <= stationary.getY() && projectile.getY() + height >= stationary.getY()) {
+		if (previousYPos + height <= stationary.getY() && projectile.getMaxY() >= stationary.getY()) {
 			// intersects from top
 			result = 1;
 		} else if (previousXPos + width <= stationary.getX() && projectile.getX() + width >= stationary.getX()) {
@@ -231,6 +232,14 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 
 	public static void setMaxWindowY(int sizeY) {
 		MAX_WINDOW_Y = sizeY;
+	}
+
+	public static int getPadding() {
+		return PADDING;
+	}
+
+	public static void setPadding(int paddingVal) {
+		PADDING = paddingVal;
 	}
 
 }
