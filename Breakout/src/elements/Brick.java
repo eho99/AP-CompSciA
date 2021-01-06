@@ -37,14 +37,14 @@ public class Brick extends Rectangle {
 	public void ballBrickCol(Ball b) {
 		int bDx = (int) b.getDx();
 		int bDy = (int) b.getDy();
-		int collVal = GDV5.collisionDirection(this, b, bDx, bDy);
+		int collDir = GDV5.collisionDirection(this, b, bDx, bDy);
 
 		if (isShown && this.intersects(b)) {
-			if (collVal == 0 || collVal == 2) { /* intersects from right/left */
+			if (collDir == 0 || collDir == 2) { /* intersects from right/left */
 				double newDx = -1 * b.getDx();
 				b.setDx(newDx);
 			}
-			if (collVal == 1 || collVal == 3) { /* intersects from top/bottom */
+			if (collDir == 1 || collDir == 3) { /* intersects from top/bottom */
 				double newDy = -1 * b.getDy();
 				b.setDy(newDy);
 			}
@@ -55,6 +55,7 @@ public class Brick extends Rectangle {
 			if (streak > 0) {
 				scoreIter *= (streak + 1);
 			}
+
 			Breakout.setScore(Breakout.getScore() + scoreIter);
 			Breakout.setBrickStreak(streak + 1);
 		}

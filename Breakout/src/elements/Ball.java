@@ -7,7 +7,7 @@ import utilities.*;
 import breakout.Breakout;
 
 public class Ball extends Rectangle {
-	private double dx, dy; // Upper Bound is 14, lower bound for y is 2
+	private double dx, dy; 
 
 	final int STARTING_X, STARTING_Y, PADDING = GDV5.getPadding(), MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
 			MAX_WINDOW_Y = GDV5.getMaxWindowY();

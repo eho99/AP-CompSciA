@@ -34,7 +34,7 @@ public abstract class GDV5 extends Canvas implements Runnable, KeyListener {
 	public static boolean[] KeysPressed;
 	private static int MAX_WINDOW_X = 1000;
 	private static int MAX_WINDOW_Y = 750;
-	private static int PADDING = 2;
+	private static int PADDING = 1;
 
 	// it is your responsibility to handle the release on keysTyped
 	public static boolean[] KeysTyped;

@@ -36,8 +36,12 @@ public class Paddle extends Rectangle {
 
     // Checks for ball paddle collision
     public void ballBrickCol(Ball b) {
+    	int bDx = (int) b.getDx();
+		int bDy = (int) b.getDy();
+		int collDir = GDV5.collisionDirection(this, b, bDx, bDy);
+    	
         if (this.intersects(b)) {
-            if (GDV5.collisionDirection(this, b, (int) b.getDx(), (int) b.getDy()) == 1) {
+            if (collDir == 1) {
                 if (dx == 0) {
                     double newDy = b.getDy() * -1.1;
                     b.setDy(newDy);
