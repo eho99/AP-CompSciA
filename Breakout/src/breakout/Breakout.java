@@ -12,7 +12,7 @@ public class Breakout extends GDV5 {
 	int PADDING = getPadding(), MAX_WINDOW_X = getMaxWindowX(), MAX_WINDOW_Y = getMaxWindowY();
 
 	// Parameters for ball and brick objects
-	private int sBrickX = PADDING, sBrickY = 100, brickHeight = 25, brickWidth = 0, paddleWidth = 140;
+	private int sBrickX = PADDING, sBrickY = 100, brickHeight = 23, brickWidth = 0, paddleWidth = 200; // 140-200
 	private int ballHeight = 20, ballWidth = 20;
 	private int sBallX = (MAX_WINDOW_X / 2) - 10, sBallY = MAX_WINDOW_Y - brickHeight - ballHeight;
 	private static int playerLives = 5, playerScore = 0, paddleBounces = 0, brickStreak = 0;
@@ -90,11 +90,12 @@ public class Breakout extends GDV5 {
 
 	// Controls all Paddle movement and Key Detection
 	public void paddleMoveCtrl() {
+		int paddSpeed = 15;
 		if (ball.getisInPlay()) {
 			if (KeysPressed[KeyEvent.VK_D] || KeysPressed[KeyEvent.VK_RIGHT]) {
-				paddle.setDx(13);
+				paddle.setDx(paddSpeed);
 			} else if (KeysPressed[KeyEvent.VK_A] || KeysPressed[KeyEvent.VK_LEFT]) {
-				paddle.setDx(-13);
+				paddle.setDx(-paddSpeed);
 			} else if (KeysTyped[KeyEvent.VK_D] || KeysTyped[KeyEvent.VK_RIGHT]) {
 				paddle.setDx(0);
 			} else if (KeysTyped[KeyEvent.VK_A] || KeysTyped[KeyEvent.VK_LEFT]) {
@@ -158,14 +159,14 @@ public class Breakout extends GDV5 {
 			titleScreenSelection();
 		} else {
 			if (ball.getisInPlay()) {
-				paddle.ballBrickCol(ball);
-
+				paddle.ballPadCol(ball);
+				
 				for (Brick[] row : bricks) {
 					for (Brick bk : row) {
 						bk.ballBrickCol(ball);
 					}
 				}
-
+				
 				paddleMoveCtrl();
 				paddle.update();
 				ball.update();
@@ -213,7 +214,8 @@ public class Breakout extends GDV5 {
 
 	// MAIN
 	public static void main(String[] args) {
-		Breakout breakout = new Breakout(40, 5);
+		// Breakout breakout = new Breakout(12, 3);
+ 		Breakout breakout = new Breakout(35, 5);
 		breakout.start();
 
 	}

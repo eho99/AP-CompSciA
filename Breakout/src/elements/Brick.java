@@ -39,7 +39,7 @@ public class Brick extends Rectangle {
 		int bDy = (int) b.getDy();
 		int collDir = GDV5.collisionDirection(this, b, bDx, bDy);
 
-		if (isShown && this.intersects(b)) {
+		if (isShown && intersects(b)) {
 			if (collDir == 0 || collDir == 2) { /* intersects from right/left */
 				double newDx = -1 * b.getDx();
 				b.setDx(newDx);

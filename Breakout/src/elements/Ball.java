@@ -44,7 +44,7 @@ public class Ball extends Rectangle {
 
 	// Gets random speed
 	public int getSpeed() {
-		int range = 3, min = 6;
+		int range = 3, min = 5;
 		return (int) (Math.random() * range) + min;
 	}
 
@@ -71,15 +71,7 @@ public class Ball extends Rectangle {
 		boolean leftWall = previousXPos >= MIN_WINDOW && getMinX() <= MIN_WINDOW;
 		boolean topWall = previousYPos >= MIN_WINDOW && getMinY() <= MIN_WINDOW;
 		boolean bottomWall = previousYPos + height <= MAX_WINDOW_Y && getMaxY() >= MAX_WINDOW_Y;
-		/*
-		 * boolean collSides = (getMinX() <= 0) || (getMaxX() >= GDV5.getMaxWindowX());
-		 * boolean collTop = (getMinY() <= 0); boolean collBottom = (getMaxY() >=
-		 * GDV5.getMaxWindowY());
-		 * 
-		 * if (collSides) { dx *= -1; } if (collTop) { dy *= -1; } if (collBottom) {
-		 * reset(); }
-		 */
-
+		
 		if (rightWall || leftWall) {
 			dx *= -1;
 		}
@@ -93,7 +85,7 @@ public class Ball extends Rectangle {
 
 	// Ball movement
 	public void update() {
-		int MAX_SPEED = 9;
+		int MAX_SPEED = 10;
 		if (dx < -MAX_SPEED)
 			dy = -MAX_SPEED;
 		else if (dx > MAX_SPEED)
@@ -112,7 +104,9 @@ public class Ball extends Rectangle {
 	public void draw(Graphics2D brush) {
 		Color ballClr = Color.white;
 		brush.setColor(ballClr);
-		brush.fill(this);
+		// brush.fill(this);
+		brush.drawOval(x, y, width, height);
+		brush.fillOval(x, y, width, height);
 	}
 
 	// Accessor Methods

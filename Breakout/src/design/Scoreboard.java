@@ -15,7 +15,7 @@ public class Scoreboard extends DesignDriver {
         String alignment;
         int yLevel, fontSize;
 
-        alignment = "leftCenter";
+        alignment = "leftJustified";
         yLevel = 25;
         fontSize = 20;
         String text = "Lives: " + lives;
@@ -41,7 +41,7 @@ public class Scoreboard extends DesignDriver {
         String alignment;
         int yLevel, fontSize;
 
-        alignment = "rightCenter";
+        alignment = "rightJustified";
         yLevel = 25;
         fontSize = 20;
         String text = "Paddle Bounces: " + bounces;
