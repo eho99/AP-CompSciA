@@ -76,9 +76,11 @@ public class Breakout extends GDV5 {
 		if (KeysPressed[KeyEvent.VK_1]) {
 			isTitleScreen = false;
 			ball.setisInPlay(false);
+		} else if (KeysPressed[KeyEvent.VK_H]) {
+			isTitleScreen = false; 
+			isHelpScreen = true;
 		}
-
-	}
+	}	
 
 	// Key Check for Starting Play
 	public void startPlay() {
@@ -134,6 +136,8 @@ public class Breakout extends GDV5 {
 	public void draw(Graphics2D brush) {
 		if (isTitleScreen && !isHelpScreen) {
 			title.drawTitle(brush);
+		} else if (isHelpScreen) {
+			title.drawHelpScreen(brush);
 		} else {
 			if (getLives() > 0 && !checkBoardClear()) {
 				drawPlayScreen(brush);

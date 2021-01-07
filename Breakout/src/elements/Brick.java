@@ -23,7 +23,7 @@ public class Brick extends Rectangle {
 	// TBD implemented
 	public void shatter(Graphics2D brush) {
 		int numPieces = 0;
-		if (!isShown && hasShattered) {
+		if (!isShown && !hasShattered) {
 			numPieces = (this.width / 20) * 3;
 
 		}

@@ -10,90 +10,67 @@ public class TitleScreen extends DesignDriver {
 
     // Draw title screen
     public void drawTitle(Graphics2D brush) {
-        brush.setColor(Color.WHITE);
-        int textSize, centerAlignment, textWidth, yLevel;
-        String text;
+        int fontSize, yLevel;
+        String text, alignment;
 
-        textSize = 100;
+        fontSize = 100;
         yLevel = 150;
         text = "Breakout";
-        brush.setFont(new Font(fontStyle, Font.BOLD, textSize));
-        textWidth = getTextWidth(brush, text);
-        centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
-        brush.drawString(text, centerAlignment, yLevel);
-
-        textSize = 25;
+        alignment = "center";
+        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
+        
+        fontSize = 25;
         yLevel = 220;
         text = "Made by Eric Ho";
-        brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
-        textWidth = getTextWidth(brush, text);
-        centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
-        brush.drawString(text, centerAlignment, yLevel);
+        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
+        
 
         yLevel = 440;
-        // text = "Press 1 for the Rally Challenge";
         text = "Press 1 for Breakout";
-        textWidth = getTextWidth(brush, text);
-        centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
-        brush.drawString(text, centerAlignment, yLevel);
+        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
+        
 
-        /*
-         * yLevel = 470; text = "Press 2 for Classic Pong"; textWidth =
-         * getTextWidth(brush, text); centerAlignment = (MAX_WINDOW_X / 2) - (textWidth
-         * / 2); brush.drawString(text, centerAlignment, yLevel);
-         * 
-         * yLevel = 500; text = "Press H for Directions and Controls"; textWidth =
-         * getTextWidth(brush, text); centerAlignment = (MAX_WINDOW_X / 2) - (textWidth
-         * / 2); brush.drawString(text, centerAlignment, yLevel);
-         */
     }
 
     // Display controls screen NEEDS TO BE UPDATED FOR BREAKOUT
-    public void displayControls(Graphics2D brush) {
+    public void drawHelpScreen(Graphics2D brush) {
         canvasClean(brush);
-        brush.setColor(Color.WHITE);
-        int textSize, centerAlignment, specificAlignment, textWidth, yLevel;
-        String text;
+        int fontSize, yLevel;
+        String text, alignment;
 
-        textSize = 40;
+        fontSize = 40;
         yLevel = 100;
         text = "How to Play:";
-        brush.setFont(new Font(fontStyle, Font.BOLD, textSize));
-        textWidth = getTextWidth(brush, text);
-        specificAlignment = (MAX_WINDOW_X / 4) - (textWidth / 2);
-        brush.drawString(text, specificAlignment, yLevel);
+        alignment = "leftCenter";
+        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
+        
 
-        textSize = 20;
+        fontSize = 40;
         text = "Controls:";
-        textWidth = getTextWidth(brush, text);
-        specificAlignment = ((MAX_WINDOW_X / 4) * 3) - (textWidth / 2);
-        brush.drawString(text, specificAlignment, yLevel);
+        alignment = "rightCenter";
+        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);        
 
-        text = "You and your opponent will move\npaddles and rally a ball back and forth.\nThe first to reach 11 points wins.";
-        brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
-        textWidth = getTextWidth(brush, text);
-        specificAlignment = (MAX_WINDOW_X / 4) - (textWidth / 6);
-        drawString(brush, text, specificAlignment, 150); // Draws while breaking up at "\n"
+        fontSize = 20;
+        yLevel = 150;
+        alignment = "leftCenter";
+        text = "In breakout, you will work to\nmove a paddle to bounce back and forth.\nThe goal is to break all the bricks.";
+        drawMultiLineString(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
+        
+        yLevel = 250;
+        text = "Press SPACE to serve the ball across.";
+        drawMultiLineString(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
+        
+        yLevel = 150;
+        alignment = "rightCenter";
+        text = "Paddle: Use the WASD or the\narrow keys to move across.";
+        drawMultiLineString(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
 
-        text = "Press both of the respective\nmovement keys to start each rally.";
-        textWidth = getTextWidth(brush, text);
-        specificAlignment = (MAX_WINDOW_X / 4) - (textWidth / 4);
-        drawString(brush, text, specificAlignment, 250);
-
-        text = "Left Paddle: Use W and S\nto move up and down.";
-        textWidth = getTextWidth(brush, text);
-        specificAlignment = (MAX_WINDOW_X / 4) * 3 - (textWidth / 4);
-        drawString(brush, text, specificAlignment, 150);
-
-        text = "Right Paddle: Use the Up and Down\nArrow Keys to move up and down.";
-        textWidth = getTextWidth(brush, text);
-        drawString(brush, text, (MAX_WINDOW_X / 4) * 3 - (textWidth / 4), 220);
-
-        textSize = 30;
-        brush.setFont(new Font(fontStyle, Font.PLAIN, textSize));
+        fontSize = 30;
+        yLevel = 600;
+        alignment = "center";
         text = "Press Escape to exit to Main Menu";
-        textWidth = getTextWidth(brush, text);
-        centerAlignment = (MAX_WINDOW_X / 2) - (textWidth / 2);
-        drawString(brush, text, centerAlignment, 400);
+        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);  
+
+        
     }
 }
