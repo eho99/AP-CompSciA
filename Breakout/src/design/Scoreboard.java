@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import breakout.Breakout;
+import utilities.DesignDriver;
 
 public class Scoreboard extends DesignDriver {
     final String fontStyle = "Trebuchet MS";

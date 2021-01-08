@@ -9,8 +9,9 @@ import utilities.GDV5;
 
 public class Paddle extends Rectangle {
     private int dx, dy;
-    final int STARTING_X, STARTING_Y, PADDING = GDV5.getPadding(), MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
+    private static final int PADDING = GDV5.getPadding(), MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
             MAX_WINDOW_Y = GDV5.getMaxWindowY();
+    private static int STARTING_X, STARTING_Y;
 
     // Paddle constructor to be defined in other classes
     public Paddle(int x, int y, int height, int width) {

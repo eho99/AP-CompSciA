@@ -9,8 +9,9 @@ import breakout.Breakout;
 public class Ball extends Rectangle {
 	private double dx, dy; 
 
-	final int STARTING_X, STARTING_Y, PADDING = GDV5.getPadding(), MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
-			MAX_WINDOW_Y = GDV5.getMaxWindowY();
+	private static final int PADDING = GDV5.getPadding(), MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
+			MAX_WINDOW_Y = GDV5.getMaxWindowY(), MAX_SPEED = 12;
+	private static int STARTING_X, STARTING_Y;
 
 	private boolean isInPlay = false;
 
@@ -67,33 +68,32 @@ public class Ball extends Rectangle {
 		int previousXPos = x - (int) dx;
 		int previousYPos = y - (int) dy;
 
-		boolean rightWall = previousXPos + width <= MAX_WINDOW_X && getMaxX() >= MAX_WINDOW_X;
-		boolean leftWall = previousXPos >= MIN_WINDOW && getMinX() <= MIN_WINDOW;
-		boolean topWall = previousYPos >= MIN_WINDOW && getMinY() <= MIN_WINDOW;
-		boolean bottomWall = previousYPos + height <= MAX_WINDOW_Y && getMaxY() >= MAX_WINDOW_Y;
+		boolean rightWall =  getMaxX() >= MAX_WINDOW_X; // previousXPos + width <= MAX_WINDOW_X && getMaxX() >= MAX_WINDOW_X;
+		boolean leftWall = getMinX() <= MIN_WINDOW; // previousXPos >= MIN_WINDOW && getMinX() <= MIN_WINDOW;
+		boolean topWall = getMinY() <= MIN_WINDOW; // previousYPos >= MIN_WINDOW && getMinY() <= MIN_WINDOW;
+		boolean bottomWall = getMaxY() >= MAX_WINDOW_Y; // previousYPos + height <= MAX_WINDOW_Y && getMaxY() >= MAX_WINDOW_Y;
 		
-		if (rightWall || leftWall) {
+		if (rightWall && (Math.signum(dx) == 1.0) || leftWall && (Math.signum(dx) == -1.0)) {
 			dx *= -1;
 		}
-		if (topWall) {
+		if (topWall && Math.signum(dy) == -1.0) {
 			dy *= -1;
 		}
-		if (bottomWall) {
+		if (bottomWall && Math.signum(dy) == 1.0) {
 			reset();
 		}
 	}
 
 	// Ball movement
 	public void update() {
-		int MAX_SPEED = 10;
 		if (dx < -MAX_SPEED)
-			dy = -MAX_SPEED;
+			dx = -MAX_SPEED;
 		else if (dx > MAX_SPEED)
 			dx = MAX_SPEED;
 
 		if (dy < -MAX_SPEED)
 			dy = -MAX_SPEED;
-		else if (dx > MAX_SPEED)
+		else if (dy > MAX_SPEED)
 			dy = MAX_SPEED;
 
 		translate((int) dx, (int) dy);

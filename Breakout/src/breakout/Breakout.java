@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 import elements.*;
 import design.*;
+import utilities.DesignDriver;
 import utilities.GDV5;
 
 public class Breakout extends GDV5 {
@@ -67,11 +68,6 @@ public class Breakout extends GDV5 {
 			for (int iterBrick = 0; iterBrick < bricks[0].length; ++iterBrick) {
 				bricks[row][iterBrick].setColor(clrArray[clrIndex]);
 				System.out.println(bricks[row][iterBrick].getColor());
-				
-				// TEMP DEBUG
-				if (iterBrick == 1 || iterBrick == 0 || iterBrick == 2) {
-					bricks[row][iterBrick].setShownState(false);
-				}
 				
 			}
 		}

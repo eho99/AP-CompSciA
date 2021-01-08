@@ -1,4 +1,4 @@
-package design;
+package utilities;
 
 /**
  * A class that draws text onto the Canvas. 
@@ -12,8 +12,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Color;
-
-import utilities.GDV5;
 
 public class DesignDriver {
 	final static int MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
