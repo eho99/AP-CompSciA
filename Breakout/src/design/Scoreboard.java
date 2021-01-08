@@ -7,6 +7,29 @@ import breakout.Breakout;
 
 public class Scoreboard extends DesignDriver {
     final String fontStyle = "Trebuchet MS";
+    
+    // Draw hearts
+    public void drawHeart(Graphics2D brush, int x, int y, int width, int height) {
+        int[] triangleX = {
+                x - 2*width/18,
+                x + width + 2*width/18,
+                (x - 2*width/18 + x + width + 2*width/18)/2};
+        int[] triangleY = { 
+                y + height - 2*height/3, 
+                y + height - 2*height/3, 
+                y + height };
+        brush.fillOval(
+                x - width/12,
+                y, 
+                width/2 + width/6, 
+                height/2); 
+        brush.fillOval(
+                x + width/2 - width/12,
+                y,
+                width/2 + width/6,
+                height/2);
+        brush.fillPolygon(triangleX, triangleY, triangleX.length);
+    }
 
     // Draw lives
     public void drawLives(Graphics2D brush) {
@@ -17,8 +40,13 @@ public class Scoreboard extends DesignDriver {
         alignment = "leftJustified";
         yLevel = 25;
         fontSize = 20;
-        String text = "Lives: " + lives;
+        String text = "Lives: "; // + lives;
         setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
+        
+        brush.setColor(Color.PINK);
+        for (int i = 0; i < Breakout.getLives(); i++) {
+        	drawHeart(brush, 90 + (25 * i), 12, 15, 15);
+        }
     }
 
     // Draw Score

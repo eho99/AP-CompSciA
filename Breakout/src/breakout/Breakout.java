@@ -1,5 +1,6 @@
 package breakout;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 
@@ -12,8 +13,8 @@ public class Breakout extends GDV5 {
 	int PADDING = getPadding(), MAX_WINDOW_X = getMaxWindowX(), MAX_WINDOW_Y = getMaxWindowY();
 
 	// Parameters for ball and brick objects
-	private int sBrickX = PADDING, sBrickY = 100, brickHeight = 23, brickWidth = 0, paddleWidth = 200; // 140-200
-	private int ballHeight = 20, ballWidth = 20;
+	private int sBrickX = PADDING, sBrickY = 100, brickHeight = 22, brickWidth = 0, paddleWidth = 200; // 140-200
+	private int ballHeight = 25, ballWidth = 25;
 	private int sBallX = (MAX_WINDOW_X / 2) - 10, sBallY = MAX_WINDOW_Y - brickHeight - ballHeight;
 	private static int playerLives = 5, playerScore = 0, paddleBounces = 0, brickStreak = 0;
 
@@ -26,7 +27,8 @@ public class Breakout extends GDV5 {
 	Paddle paddle;
 	TitleScreen title = new TitleScreen();
 	Scoreboard scoreboard = new Scoreboard();
-
+	
+	
 	public Breakout(int numBricks, int numRows) {
 		int bricksPerRow = numBricks / numRows;
 		bricks = new Brick[numRows][bricksPerRow];
@@ -34,8 +36,8 @@ public class Breakout extends GDV5 {
 		int whiteSpace = PADDING * bricksPerRow;
 		brickWidth = (MAX_WINDOW_X - whiteSpace) / bricksPerRow;
 
-		for (int row = 0; row < numRows; row++) {
-			for (int iterBrick = 0; iterBrick < bricksPerRow; iterBrick++) {
+		for (int row = 0; row < numRows; ++row) {
+			for (int iterBrick = 0; iterBrick < bricksPerRow; ++iterBrick) {
 				bricks[row][iterBrick] = new Brick(sBrickX, sBrickY, brickHeight, brickWidth);
 				sBrickX += brickWidth + PADDING;
 			}
@@ -48,7 +50,34 @@ public class Breakout extends GDV5 {
 
 		int edgeBrickX = whiteSpace + (bricksPerRow * brickWidth);
 		setMaxWindowX(edgeBrickX + PADDING);
+		colorAssignment();
 	}
+	
+	public void colorAssignment() {
+		Color[] clrArray = new Color[3];
+		clrArray[0] = Color.RED;
+		clrArray[1] = Color.WHITE; // Color.ORANGE;
+		clrArray[2] = Color.BLUE;  // Color.YELLOW;
+		// clrArray[3] = Color.GREEN;
+		// clrArray[4] = Color.BLUE;
+		
+		for (int row = 0; row < bricks.length; ++row) {
+			int clrIndex = row % clrArray.length;
+			System.out.println(clrIndex);
+			for (int iterBrick = 0; iterBrick < bricks[0].length; ++iterBrick) {
+				bricks[row][iterBrick].setColor(clrArray[clrIndex]);
+				System.out.println(bricks[row][iterBrick].getColor());
+				
+				// TEMP DEBUG
+				if (iterBrick == 1 || iterBrick == 0 || iterBrick == 2) {
+					bricks[row][iterBrick].setShownState(false);
+				}
+				
+			}
+		}
+			
+	}
+	
 
 	// Global escape key
 	public void escapeToMenu(Graphics2D brush) {
@@ -219,7 +248,7 @@ public class Breakout extends GDV5 {
 	// MAIN
 	public static void main(String[] args) {
 		// Breakout breakout = new Breakout(12, 3);
- 		Breakout breakout = new Breakout(35, 5);
+ 		Breakout breakout = new Breakout(49, 7);
 		breakout.start();
 
 	}

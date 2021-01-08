@@ -10,6 +10,7 @@ import utilities.GDV5;
 public class Brick extends Rectangle {
 	final int PADDING = GDV5.getPadding(), MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
 	private boolean isShown = true, hasShattered = false;
+	private Color brickClr;
 
 	// Brick constructor to be defined in other classes
 	public Brick(int x, int y, int height, int width) {
@@ -58,16 +59,17 @@ public class Brick extends Rectangle {
 
 			Breakout.setScore(Breakout.getScore() + scoreIter);
 			Breakout.setBrickStreak(streak + 1);
+			
+			System.out.println(b.getDx());
+			System.out.println(b.getDy());
 		}
 
 	}
 
 	// Draws paddle object
 	public void draw(Graphics2D win) {
-		Color padClr = Color.white;
-
 		if (isShown) {
-			win.setColor(padClr);
+			win.setColor(brickClr);
 			win.fill(this);
 		}
 	}
@@ -78,6 +80,14 @@ public class Brick extends Rectangle {
 
 	public void setShownState(boolean state) {
 		isShown = state;
+	}
+	
+	public Color getColor() {
+		return brickClr;
+	}
+	
+	public void setColor(Color clr) {
+		brickClr = clr;
 	}
 
 }

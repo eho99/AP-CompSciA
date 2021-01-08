@@ -29,6 +29,9 @@ public class TitleScreen extends DesignDriver {
         text = "Press 1 for Breakout";
         setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
         
+        yLevel = 480;
+        text = "Press H for Directions";
+        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);       
 
     }
 
