@@ -9,11 +9,10 @@ import breakout.Breakout;
 public class Ball extends Rectangle {
 	private double dx, dy; 
 
-	private static final int PADDING = GDV5.getPadding(), MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
-			MAX_WINDOW_Y = GDV5.getMaxWindowY(), MAX_SPEED = 12;
+	private static final int MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
+			MAX_WINDOW_Y = GDV5.getMaxWindowY(), MAX_SPEED = 10;
 	private static int STARTING_X, STARTING_Y;
-
-	private boolean isInPlay = false;
+	private static boolean isInPlay = false;
 
 	// Ball constructor to be defined in other classes
 	public Ball(int x, int y, int height, int width, double dx, double dy) {
@@ -65,9 +64,6 @@ public class Ball extends Rectangle {
 
 	// Checks ball collision for window edges
 	public void wallColl() {
-		int previousXPos = x - (int) dx;
-		int previousYPos = y - (int) dy;
-
 		boolean rightWall =  getMaxX() >= MAX_WINDOW_X; // previousXPos + width <= MAX_WINDOW_X && getMaxX() >= MAX_WINDOW_X;
 		boolean leftWall = getMinX() <= MIN_WINDOW; // previousXPos >= MIN_WINDOW && getMinX() <= MIN_WINDOW;
 		boolean topWall = getMinY() <= MIN_WINDOW; // previousYPos >= MIN_WINDOW && getMinY() <= MIN_WINDOW;
@@ -102,8 +98,7 @@ public class Ball extends Rectangle {
 
 	// Draws ball
 	public void draw(Graphics2D brush) {
-		Color ballClr = Color.white;
-		brush.setColor(ballClr);
+		brush.setColor(Color.WHITE);
 		// brush.fill(this);
 		brush.drawOval(x, y, width, height);
 		brush.fillOval(x, y, width, height);

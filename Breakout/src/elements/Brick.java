@@ -8,7 +8,7 @@ import breakout.Breakout;
 import utilities.GDV5;
 
 public class Brick extends Rectangle {
-	final static int PADDING = GDV5.getPadding(), MIN_WINDOW = 0, MAX_WINDOW_X = 800, MAX_WINDOW_Y = 600;
+	private static int scoreIter = 100;
 	private boolean isShown = true, hasShattered = false;
 	private Color brickClr;
 
@@ -36,33 +36,27 @@ public class Brick extends Rectangle {
 
 	// Checks for ball paddle collision
 	public void ballBrickCol(Ball b) {
-		int bDx = (int) b.getDx();
-		int bDy = (int) b.getDy();
-		int collDir = GDV5.collisionDirection(this, b, bDx, bDy);
-
 		if (isShown && intersects(b)) {
-			System.out.println("Coll Dir: " + collDir);
+			int bDx = (int) b.getDx();
+			int bDy = (int) b.getDy();
+			int collDir = GDV5.collisionDirection(this, b, bDx, bDy);
+			
 			if (collDir == 0 || collDir == 2) { /* intersects from right/left */
-				double newDx = -1 * b.getDx();
-				b.setDx(newDx);
+				b.setDx(-1 * b.getDx());
 			}
 			if (collDir == 1 || collDir == 3) { /* intersects from top/bottom */
-				double newDy = -1 * b.getDy();
-				b.setDy(newDy);
+				b.setDy(-1 * b.getDy());
 			}
 			isShown = false;
 
 			int streak = Breakout.getBrickStreak();
-			int scoreIter = 100;
 			if (streak > 0) {
+				scoreIter = 100;
 				scoreIter *= (streak + 1);
 			}
 
 			Breakout.setScore(Breakout.getScore() + scoreIter);
 			Breakout.setBrickStreak(streak + 1);
-			
-			// System.out.println(b.getDx());
-			// System.out.println(b.getDy());
 		}
 
 	}

@@ -11,11 +11,12 @@ import utilities.GDV5;
 
 public class Breakout extends GDV5 {
 	// JFRAME Constants
-	int PADDING = getPadding(), MAX_WINDOW_X = getMaxWindowX(), MAX_WINDOW_Y = getMaxWindowY();
+	final static int MAX_WINDOW_X = getMaxWindowX(), MAX_WINDOW_Y = getMaxWindowY();
 
 	// Parameters for ball and brick objects
-	private int sBrickX = PADDING, sBrickY = 100, brickHeight = 22, brickWidth = 0, paddleWidth = 200; // 140-200
-	private int ballHeight = 25, ballWidth = 25;
+	private static final int HORIZONTAL_BRICK_DISTANCE = 15, VERTICAL_BRICK_DISTANCE = 20;
+	private int sBrickX = HORIZONTAL_BRICK_DISTANCE, sBrickY = 75, brickHeight = 22, brickWidth = 0, paddleWidth = 200; // 140-200
+	private int ballHeight = 20, ballWidth = 20;
 	private int sBallX = (MAX_WINDOW_X / 2) - 10, sBallY = MAX_WINDOW_Y - brickHeight - ballHeight;
 	private static int playerLives = 5, playerScore = 0, paddleBounces = 0, brickStreak = 0;
 
@@ -34,31 +35,31 @@ public class Breakout extends GDV5 {
 		int bricksPerRow = numBricks / numRows;
 		bricks = new Brick[numRows][bricksPerRow];
 
-		int whiteSpace = PADDING * bricksPerRow;
+		int whiteSpace = HORIZONTAL_BRICK_DISTANCE * bricksPerRow;
 		brickWidth = (MAX_WINDOW_X - whiteSpace) / bricksPerRow;
 
 		for (int row = 0; row < numRows; ++row) {
 			for (int iterBrick = 0; iterBrick < bricksPerRow; ++iterBrick) {
 				bricks[row][iterBrick] = new Brick(sBrickX, sBrickY, brickHeight, brickWidth);
-				sBrickX += brickWidth + PADDING;
+				sBrickX += brickWidth + HORIZONTAL_BRICK_DISTANCE;
 			}
-			sBrickY += brickHeight + PADDING;
-			sBrickX = PADDING;
+			sBrickY += brickHeight + VERTICAL_BRICK_DISTANCE;
+			sBrickX = HORIZONTAL_BRICK_DISTANCE;
 		}
 
 		paddle = new Paddle((MAX_WINDOW_X / 2) - (paddleWidth / 2), (MAX_WINDOW_Y - brickHeight), brickHeight,
 				paddleWidth);
 
 		int edgeBrickX = whiteSpace + (bricksPerRow * brickWidth);
-		setMaxWindowX(edgeBrickX + PADDING);
+		setMaxWindowX(edgeBrickX + HORIZONTAL_BRICK_DISTANCE);
 		colorAssignment();
 	}
 	
 	public void colorAssignment() {
-		Color[] clrArray = new Color[3];
-		clrArray[0] = Color.RED;
+		Color[] clrArray = new Color[2];
+		clrArray[0] = Color.PINK;
 		clrArray[1] = Color.WHITE; // Color.ORANGE;
-		clrArray[2] = Color.BLUE;  // Color.YELLOW;
+		// clrArray[2] = Color.YELLOW;  // Color.YELLOW;
 		// clrArray[3] = Color.GREEN;
 		// clrArray[4] = Color.BLUE;
 		
