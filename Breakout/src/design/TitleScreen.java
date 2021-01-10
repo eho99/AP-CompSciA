@@ -8,42 +8,34 @@ import utilities.DesignDriver;
 
 public class TitleScreen extends DesignDriver {
     final String fontStyle = "Trebuchet MS";
+    int fontSize, yLevel;
+    String text, alignment;
 
     // Draw title screen
     public void drawTitle(Graphics2D brush) {
-        int fontSize, yLevel;
-        String text, alignment;
-
         fontSize = 100;
-        yLevel = 150;
+        yLevel = 125;
         text = "Breakout";
         alignment = "center";
         setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
         
         fontSize = 25;
-        yLevel = 220;
+        yLevel = 175;
         text = "Made by Eric Ho";
         setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
         
 
-        yLevel = 440;
-        text = "Press 1 for Breakout";
+        yLevel = 600;
+        text = "Press 1 to Start";
         setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
-        
-        yLevel = 480;
-        text = "Press H for Directions";
-        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);       
+    
 
     }
 
     // Display controls screen NEEDS TO BE UPDATED FOR BREAKOUT
     public void drawHelpScreen(Graphics2D brush) {
-        canvasClean(brush);
-        int fontSize, yLevel;
-        String text, alignment;
-
         fontSize = 40;
-        yLevel = 100;
+        yLevel = 300;
         text = "How to Play:";
         alignment = "leftCenter";
         setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
@@ -55,25 +47,27 @@ public class TitleScreen extends DesignDriver {
         setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);        
 
         fontSize = 20;
-        yLevel = 150;
+        yLevel = 350;
         alignment = "leftCenter";
-        text = "In breakout, you will work to\nmove a paddle to bounce back and forth.\nThe goal is to break all the bricks.";
+        text = "In breakout, you will work to move\na paddle to bounce back and forth.\nThe goal is to break all the bricks.";
         drawMultiLineString(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
         
-        yLevel = 250;
+        yLevel = 450;
         text = "Press SPACE to serve the ball across.";
         drawMultiLineString(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
         
-        yLevel = 150;
+        yLevel = 350;
         alignment = "rightCenter";
         text = "Paddle: Use the WASD or the\narrow keys to move across.";
         drawMultiLineString(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
 
+        /*
         fontSize = 30;
         yLevel = 600;
         alignment = "center";
         text = "Press Escape to exit to Main Menu";
-        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);  
+        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
+        */  
 
         
     }

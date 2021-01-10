@@ -14,9 +14,9 @@ public class Breakout extends GDV5 {
 	final static int MAX_WINDOW_X = getMaxWindowX(), MAX_WINDOW_Y = getMaxWindowY();
 
 	// Parameters for ball and brick objects
-	private static final int HORIZONTAL_BRICK_DISTANCE = 15, VERTICAL_BRICK_DISTANCE = 20;
-	private int sBrickX = HORIZONTAL_BRICK_DISTANCE, sBrickY = 75, brickHeight = 22, brickWidth = 0, paddleWidth = 200; // 140-200
-	private int ballHeight = 20, ballWidth = 20;
+	private static final int HORIZONTAL_BRICK_DISTANCE = 15, VERTICAL_BRICK_DISTANCE = 15;
+	private int sBrickX = HORIZONTAL_BRICK_DISTANCE, sBrickY = 90, brickHeight = 22, brickWidth = 0, paddleWidth = 200; // 140-200
+	private int ballHeight = 25, ballWidth = 25;
 	private int sBallX = (MAX_WINDOW_X / 2) - 10, sBallY = MAX_WINDOW_Y - brickHeight - ballHeight;
 	private static int playerLives = 5, playerScore = 0, paddleBounces = 0, brickStreak = 0;
 
@@ -57,7 +57,7 @@ public class Breakout extends GDV5 {
 	
 	public void colorAssignment() {
 		Color[] clrArray = new Color[2];
-		clrArray[0] = Color.PINK;
+		clrArray[0] = Color.CYAN;
 		clrArray[1] = Color.WHITE; // Color.ORANGE;
 		// clrArray[2] = Color.YELLOW;  // Color.YELLOW;
 		// clrArray[3] = Color.GREEN;
@@ -162,6 +162,7 @@ public class Breakout extends GDV5 {
 	public void draw(Graphics2D brush) {
 		if (isTitleScreen && !isHelpScreen) {
 			title.drawTitle(brush);
+			title.drawHelpScreen(brush);
 		} else if (isHelpScreen) {
 			title.drawHelpScreen(brush);
 		} else {
