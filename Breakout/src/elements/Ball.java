@@ -36,6 +36,7 @@ public class Ball extends Rectangle {
 		isInPlay = false;
 		Breakout.setLives(Breakout.getLives() - 1);
 		Breakout.setScore(Breakout.getScore() - 250);
+		Breakout.setBrickStreak(0);
 
 		if (Breakout.getScore() < 0) {
 			Breakout.setScore(0);

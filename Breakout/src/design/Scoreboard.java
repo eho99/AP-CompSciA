@@ -34,7 +34,6 @@ public class Scoreboard extends DesignDriver {
 
     // Draw lives
     public void drawLives(Graphics2D brush) {
-        String lives = Integer.toString(Breakout.getLives());
         String alignment;
         int yLevel, fontSize;
 
