@@ -25,12 +25,12 @@ public class Brick extends Rectangle {
 	public void shatter(Graphics2D brush) {
 		int numPieces = 0;
 		if (!isShown && !hasShattered) {
-			numPieces = (this.width / 20) * 3;
+			numPieces = this.width * 3;
 
 		}
 		Rectangle[] shatterRect = new Rectangle[numPieces];
 		for (Rectangle r : shatterRect) {
-
+			
 		}
 	}
 

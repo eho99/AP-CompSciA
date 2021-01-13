@@ -15,14 +15,12 @@ public class Ball extends Rectangle {
 	private static boolean isInPlay = false;
 
 	// Ball constructor to be defined in other classes
-	public Ball(int x, int y, int height, int width, double dx, double dy) {
+	public Ball(int x, int y, int height, int width) {
 		super(x, x, height, width);
 		this.x = x;
 		this.y = y;
 		this.height = height;
 		this.width = width;
-		this.dx = dx;
-		this.dy = dy;
 
 		STARTING_X = x;
 		STARTING_Y = y;

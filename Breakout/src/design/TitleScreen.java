@@ -60,15 +60,6 @@ public class TitleScreen extends DesignDriver {
         alignment = "rightCenter";
         text = "Paddle: Use the WASD or the\narrow keys to move across.";
         drawMultiLineString(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
-
-        /*
-        fontSize = 30;
-        yLevel = 600;
-        alignment = "center";
-        text = "Press Escape to exit to Main Menu";
-        setAndDraw(brush, Color.WHITE, fontStyle, Font.BOLD, fontSize, alignment, yLevel, text);
-        */  
-
         
     }
 }

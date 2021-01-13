@@ -14,7 +14,7 @@ public class Breakout extends GDV5 {
 	final static int MAX_WINDOW_X = getMaxWindowX(), MAX_WINDOW_Y = getMaxWindowY();
 
 	// Spacing between bricks
-	private static final int HORIZONTAL_BRICK_DISTANCE = 15, VERTICAL_BRICK_DISTANCE = 15;
+	private static final int HORIZONTAL_BRICK_DISTANCE = 10, VERTICAL_BRICK_DISTANCE = 10;
 	
 	// Brick position and dimensions
 	private int sBrickX = HORIZONTAL_BRICK_DISTANCE, sBrickY = 90, brickHeight = 22, brickWidth = 0, paddleWidth = 200; // 140-200
@@ -36,7 +36,7 @@ public class Breakout extends GDV5 {
 	Brick[][] bricks;
 	
 	// Declaration of ball object
-	Ball ball = new Ball(sBallX, sBallY, ballHeight, ballWidth, 0, 0);
+	Ball ball = new Ball(sBallX, sBallY, ballHeight, ballWidth);
 	
 	// Declaration of paddle object
 	Paddle paddle;
