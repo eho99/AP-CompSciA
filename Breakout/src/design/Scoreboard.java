@@ -111,7 +111,7 @@ public class Scoreboard extends DesignDriver {
 
     // Draw Win Screen
     public void drawWinScreen(Graphics2D brush) {
-        String score = Integer.toString(Breakout.getScore());
+        String score = Integer.toString(Breakout.getScore() + (2000 * Breakout.getLives()));
         String alignment;
         int yLevel, fontSize;
 

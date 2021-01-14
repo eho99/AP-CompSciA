@@ -27,6 +27,9 @@ public class Breakout extends GDV5 {
 	
 	// Player score and variables
 	private static int playerLives = 5, playerScore = 0, paddleBounces = 0, brickStreak = 0;
+	
+	// Total brick and number of rows
+	private int numBricks = 49, numRows = 7;
 
 	// Menu/State trackers
 	public boolean isPlaying, isHelpScreen = false, isTitleScreen = true, isEndScreen = false, isPauseScreen = false,
@@ -39,14 +42,15 @@ public class Breakout extends GDV5 {
 	Ball ball = new Ball(sBallX, sBallY, ballHeight, ballWidth);
 	
 	// Declaration of paddle object
-	Paddle paddle;
+	Paddle paddle = new Paddle((MAX_WINDOW_X / 2) - (paddleWidth / 2), (MAX_WINDOW_Y - brickHeight), brickHeight,
+			paddleWidth);
 	
 	// Declaration of design elements
 	TitleScreen title = new TitleScreen();
 	Scoreboard scoreboard = new Scoreboard();
 
 	// Class Constructor
-	public Breakout(int numBricks, int numRows) {
+	public Breakout() {
 		int bricksPerRow = numBricks / numRows;
 		bricks = new Brick[numRows][bricksPerRow];
 
@@ -62,21 +66,18 @@ public class Breakout extends GDV5 {
 			sBrickX = HORIZONTAL_BRICK_DISTANCE;
 		}
 
-		paddle = new Paddle((MAX_WINDOW_X / 2) - (paddleWidth / 2), (MAX_WINDOW_Y - brickHeight), brickHeight,
-				paddleWidth);
-
 		int edgeBrickX = whiteSpace + (bricksPerRow * brickWidth);
 		setMaxWindowX(edgeBrickX + HORIZONTAL_BRICK_DISTANCE);
 		colorAssignment();
 	}
 
 	public void colorAssignment() {
-		Color[] clrArray = new Color[5];
+		Color[] clrArray = new Color[4];
 		clrArray[0] = new Color(42, 191, 101);
 		clrArray[1] = new Color(7, 99, 120); 
 		clrArray[2] = new Color(242, 79, 191);
 		clrArray[3] = new Color(222, 111, 11);
-		clrArray[4] = new Color(145, 234, 83);
+		// clrArray[4] = new Color(145, 234, 83);
 
 		for (int row = 0; row < bricks.length; ++row) {
 			int clrIndex = row % clrArray.length;
@@ -152,6 +153,8 @@ public class Breakout extends GDV5 {
 	}
 	
 	public void drawLvl1(Graphics2D brush) {
+		numBricks = 49;	
+		numRows = 7;
 		for (Brick[] row : bricks) {
 			for (Brick bk : row) {
 				bk.draw(brush);
@@ -162,9 +165,20 @@ public class Breakout extends GDV5 {
 	public void drawLvl2(Graphics2D brush) {
 		
 	}
+	
+	public void drawLvl3(Graphics2D brush) {
+		
+	}
 
 	public void drawPlayScreen(Graphics2D brush) {
-		drawLvl1(brush);
+		if (unlockedLvl3) {
+			drawLvl3(brush);
+		} else if (unlockedLvl2) {
+			drawLvl2(brush);
+		} else {
+			drawLvl1(brush);
+		}		
+		
 		ball.draw(brush);
 		paddle.draw(brush);
 		scoreboard.drawLives(brush);
@@ -272,7 +286,7 @@ public class Breakout extends GDV5 {
 	// MAIN
 	public static void main(String[] args) {
 		// Breakout breakout = new Breakout(12, 3);
-		Breakout breakout = new Breakout(49, 7);
+		Breakout breakout = new Breakout();
 		breakout.start();
 
 	}
