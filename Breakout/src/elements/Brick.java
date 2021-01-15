@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import breakout.Breakout;
 import utilities.GDV5;
+import elements.Powerup;
 
 public class Brick extends Rectangle {
 	private static int scoreIter = 100;
@@ -32,6 +33,10 @@ public class Brick extends Rectangle {
 		for (Rectangle r : shatterRect) {
 			
 		}
+	}
+	
+	public boolean genPowerUp() {
+		return false;
 	}
 
 	// Checks for ball paddle collision
