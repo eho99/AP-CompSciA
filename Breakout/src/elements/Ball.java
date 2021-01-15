@@ -91,9 +91,7 @@ public class Ball extends Rectangle {
 		else if (dy > MAX_SPEED)
 			dy = MAX_SPEED;
 
-		// translate((int) dx, (int) dy);
-		x += dx;
-		y += dy;
+		translate((int) dx, (int) dy);
 		wallColl();
 	}
 
