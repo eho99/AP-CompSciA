@@ -5,8 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import breakout.Breakout;
-import utilities.GDV5;
-import elements.Powerup;
+import utilities.*;
 
 public class Brick extends Rectangle {
 	private static int scoreIter = 100;
@@ -34,6 +33,7 @@ public class Brick extends Rectangle {
 			
 		}
 	}
+	
 	
 	public boolean genPowerUp() {
 		return false;

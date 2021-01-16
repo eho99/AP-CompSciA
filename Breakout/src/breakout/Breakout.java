@@ -8,6 +8,7 @@ import elements.*;
 import design.*;
 import utilities.DesignDriver;
 import utilities.GDV5;
+import utilities.SoundDriver;
 
 public class Breakout extends GDV5 {
 	// JFRAME Constants
@@ -15,19 +16,20 @@ public class Breakout extends GDV5 {
 
 	// Spacing between bricks
 	private static final int HORIZONTAL_BRICK_DISTANCE = 10, VERTICAL_BRICK_DISTANCE = 10;
-	
+
 	// Brick position and dimensions
 	private int sBrickX = HORIZONTAL_BRICK_DISTANCE, sBrickY = 90, brickHeight = 22, brickWidth = 0, paddleWidth = 200; // 140-200
-	
+
 	// Ball position and dimensions
-	private int ballHeight = 25, ballWidth = 25, sBallX = (MAX_WINDOW_X / 2) - 10, sBallY = MAX_WINDOW_Y - brickHeight - ballHeight;
-	
+	private int ballHeight = 25, ballWidth = 25, sBallX = (MAX_WINDOW_X / 2) - 10,
+			sBallY = MAX_WINDOW_Y - brickHeight - ballHeight;
+
 	// Paddle speed
 	private static final int PADDLE_SPEED = 15;
-	
+
 	// Player score and variables
 	private static int playerLives = 5, playerScore = 0, paddleBounces = 0, brickStreak = 0;
-	
+
 	// Total brick and number of rows
 	private int numBricks = 49, numRows = 7;
 
@@ -37,17 +39,35 @@ public class Breakout extends GDV5 {
 
 	// Declaration of brick array
 	Brick[][] bricks;
-	
+
 	// Declaration of ball object
 	Ball ball = new Ball(sBallX, sBallY, ballHeight, ballWidth);
-	
+
 	// Declaration of paddle object
 	Paddle paddle = new Paddle((MAX_WINDOW_X / 2) - (paddleWidth / 2), (MAX_WINDOW_Y - brickHeight), brickHeight,
 			paddleWidth);
-	
+
 	// Declaration of design elements
 	TitleScreen title = new TitleScreen();
 	Scoreboard scoreboard = new Scoreboard();
+	
+	// SoundDriver Declaration
+	String[] soundFiles = new String[9].;
+	soundFiles[1] = "./../sounds/background.wav";
+	soundFiles[2] = "./../sounds/collision1.wav";
+	soundFiles[3] = "./../sounds/collision2.wav";
+	soundFiles[4] = "./../sounds/collision3.wav";
+	soundFiles[5] = "./../sounds/collision4.wav";
+	soundFiles[6] = "./../sounds/collision5.wav";
+	soundFiles[7] = "./../sounds/collision6.wav";
+	soundFiles[8] = "./../sounds/collision7.wav";
+	soundFiles[9] = "./../sounds/collision8.wav";
+	SoundDriver sd = new SoundDrive(soundFiles, this);
+
+	public void soundHandler() {
+		
+		SoundDriver sd = new SoundDriver(soundFiles, this);
+	}
 
 	// Class Constructor
 	public Breakout() {
@@ -74,7 +94,7 @@ public class Breakout extends GDV5 {
 	public void colorAssignment() {
 		Color[] clrArray = new Color[4];
 		clrArray[0] = new Color(42, 191, 101);
-		clrArray[1] = new Color(7, 99, 120); 
+		clrArray[1] = new Color(7, 99, 120);
 		clrArray[2] = new Color(242, 79, 191);
 		clrArray[3] = new Color(222, 111, 11);
 		// clrArray[4] = new Color(145, 234, 83);
@@ -115,7 +135,7 @@ public class Breakout extends GDV5 {
 		if (KeysPressed[KeyEvent.VK_1]) {
 			isTitleScreen = false;
 			ball.setisInPlay(false);
-		} 
+		}
 	}
 
 	// Key Check for Starting Play
@@ -151,9 +171,9 @@ public class Breakout extends GDV5 {
 		}
 		return true; // true means all bricks are cleared
 	}
-	
+
 	public void drawLvl1(Graphics2D brush) {
-		numBricks = 49;	
+		numBricks = 49;
 		numRows = 7;
 		for (Brick[] row : bricks) {
 			for (Brick bk : row) {
@@ -161,13 +181,13 @@ public class Breakout extends GDV5 {
 			}
 		}
 	}
-	
+
 	public void drawLvl2(Graphics2D brush) {
-		
+
 	}
-	
+
 	public void drawLvl3(Graphics2D brush) {
-		
+
 	}
 
 	public void drawPlayScreen(Graphics2D brush) {
@@ -177,8 +197,8 @@ public class Breakout extends GDV5 {
 			drawLvl2(brush);
 		} else {
 			drawLvl1(brush);
-		}		
-		
+		}
+
 		ball.draw(brush);
 		paddle.draw(brush);
 		scoreboard.drawLives(brush);
