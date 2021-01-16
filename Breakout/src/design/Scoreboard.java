@@ -39,7 +39,7 @@ public class Scoreboard extends DesignDriver {
         alignment = "leftJustified";
         yLevel = 25;
         fontSize = 20;
-        String text = "Lives: "; // + lives;
+        String text = "Lives "; // + lives;
         setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
         
         brush.setColor(Color.PINK);
@@ -55,7 +55,7 @@ public class Scoreboard extends DesignDriver {
         alignment = "center";
         yLevel = 25;
         fontSize = 20;
-        String text = "Score: " + score;
+        String text = "Score " + score;
         setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
     }
 
@@ -65,7 +65,7 @@ public class Scoreboard extends DesignDriver {
         alignment = "rightJustified";
         yLevel = 25;
         fontSize = 20;
-        String text = "Paddle Bounces: " + bounces;
+        String text = "Paddle Bounces " + bounces;
         setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
     }
 

@@ -70,9 +70,11 @@ public class Ball extends Rectangle {
 		
 		if (rightWall && (Math.signum(dx) == 1.0) || leftWall && (Math.signum(dx) == -1.0)) {
 			dx *= -1;
+			Breakout.playCollision();
 		}
 		if (topWall && Math.signum(dy) == -1.0) {
 			dy *= -1;
+			Breakout.playCollision();
 		}
 		if (bottomWall && Math.signum(dy) == 1.0) {
 			reset();
@@ -98,9 +100,9 @@ public class Ball extends Rectangle {
 	// Draws ball
 	public void draw(Graphics2D brush) {
 		brush.setColor(Color.WHITE);
-		// brush.fill(this);
-		brush.drawOval(x, y, width, height);
-		brush.fillOval(x, y, width, height);
+		brush.fill(this);
+		// rush.drawOval(x, y, width, height);
+		// brush.fillOval(x, y, width, height);
 	}
 
 	// Accessor Methods

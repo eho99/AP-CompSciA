@@ -3,6 +3,7 @@ package breakout;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.LongSummaryStatistics;
 
 import elements.*;
 import design.*;
@@ -15,7 +16,7 @@ public class Breakout extends GDV5 {
 	final static int MAX_WINDOW_X = getMaxWindowX(), MAX_WINDOW_Y = getMaxWindowY();
 
 	// Spacing between bricks
-	private static final int HORIZONTAL_BRICK_DISTANCE = 10, VERTICAL_BRICK_DISTANCE = 10;
+	private static final int HORIZONTAL_BRICK_DISTANCE = 15, VERTICAL_BRICK_DISTANCE = 15;
 
 	// Brick position and dimensions
 	private int sBrickX = HORIZONTAL_BRICK_DISTANCE, sBrickY = 90, brickHeight = 22, brickWidth = 0, paddleWidth = 200; // 140-200
@@ -34,8 +35,9 @@ public class Breakout extends GDV5 {
 	private int numBricks = 49, numRows = 7;
 
 	// Menu/State trackers
-	public boolean isPlaying, isHelpScreen = false, isTitleScreen = true, isEndScreen = false, isPauseScreen = false,
-			unlockedLvl2 = false, unlockedLvl3 = false;
+	public static boolean isPlaying, isHelpScreen = false, isTitleScreen = true, isLossScreen = false,
+			isWinScreen = false, isPauseScreen = false, unlockedLvl2 = false, unlockedLvl3 = false,
+			lostMusicPlayed = false, isMuted = false;
 
 	// Declaration of brick array
 	Brick[][] bricks;
@@ -50,27 +52,32 @@ public class Breakout extends GDV5 {
 	// Declaration of design elements
 	TitleScreen title = new TitleScreen();
 	Scoreboard scoreboard = new Scoreboard();
-	
-	// SoundDriver Declaration
-	String[] soundFiles = new String[9].;
-	soundFiles[1] = "./../sounds/background.wav";
-	soundFiles[2] = "./../sounds/collision1.wav";
-	soundFiles[3] = "./../sounds/collision2.wav";
-	soundFiles[4] = "./../sounds/collision3.wav";
-	soundFiles[5] = "./../sounds/collision4.wav";
-	soundFiles[6] = "./../sounds/collision5.wav";
-	soundFiles[7] = "./../sounds/collision6.wav";
-	soundFiles[8] = "./../sounds/collision7.wav";
-	soundFiles[9] = "./../sounds/collision8.wav";
-	SoundDriver sd = new SoundDrive(soundFiles, this);
 
-	public void soundHandler() {
-		
-		SoundDriver sd = new SoundDriver(soundFiles, this);
+	// SoundDriver Declaration
+	private static String[] soundFiles;
+	private static SoundDriver sounds;
+
+	public void loadSounds() {
+		soundFiles = new String[13];
+		soundFiles[0] = "./../sounds/start.wav";
+		soundFiles[1] = "./../sounds/collision1.wav";
+		soundFiles[2] = "./../sounds/collision2.wav";
+		soundFiles[3] = "./../sounds/collision3.wav";
+		soundFiles[4] = "./../sounds/collision4.wav";
+		soundFiles[5] = "./../sounds/collision5.wav";
+		soundFiles[6] = "./../sounds/collision6.wav";
+		soundFiles[7] = "./../sounds/collision7.wav";
+		soundFiles[8] = "./../sounds/collision8.wav";
+		soundFiles[9] = "./../sounds/backgroundWii.wav";
+		soundFiles[10] = "./../sounds/lose.wav";
+		soundFiles[11] = "./../sounds/inGameSoundFade.wav";
+		soundFiles[12] = "./../sounds/win.wav";
+		sounds = new SoundDriver(soundFiles, this);
 	}
 
 	// Class Constructor
 	public Breakout() {
+		loadSounds();
 		int bricksPerRow = numBricks / numRows;
 		bricks = new Brick[numRows][bricksPerRow];
 
@@ -91,21 +98,126 @@ public class Breakout extends GDV5 {
 		colorAssignment();
 	}
 
-	public void colorAssignment() {
-		Color[] clrArray = new Color[4];
-		clrArray[0] = new Color(42, 191, 101);
-		clrArray[1] = new Color(7, 99, 120);
-		clrArray[2] = new Color(242, 79, 191);
-		clrArray[3] = new Color(222, 111, 11);
-		// clrArray[4] = new Color(145, 234, 83);
+	// All sound playing functions
+	public static void playTitleMusic() {
+		int file = 9;
+		for (int i = 0; i < soundFiles.length; i++) {
+			if ((i != file) && sounds.isPlaying(i)) {
+				sounds.stop(i);
+			}
+		}
+		if (!sounds.isPlaying(file) && !isMuted) {
+			sounds.loop(file);
+		}
+	}
 
-		for (int row = 0; row < bricks.length; ++row) {
-			int clrIndex = row % clrArray.length;
-			for (int iterBrick = 0; iterBrick < bricks[0].length; ++iterBrick) {
-				bricks[row][iterBrick].setColor(clrArray[clrIndex]);
+	public static void playStartMusic() {
+		int file = 0;
+		for (int i = 0; i < soundFiles.length; i++) {
+			if ((i != file) && sounds.isPlaying(i)) {
+				sounds.stop(i);
+			}
+		}
+		if (!sounds.isPlaying(file) && !isMuted) {
+			sounds.play(file);
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void playInGameMusic() {
+		int file = 11;
+		if (!lostMusicPlayed) {
+			for (int i = 0; i < soundFiles.length; i++) {
+				if ((i != file) && sounds.isPlaying(i)) {
+					sounds.stop(i);
+				}
+			}
+			if (!sounds.isPlaying(file) && !isMuted) {
+				sounds.loop(file);
 			}
 		}
 
+	}
+
+	public static void playWinMusic() {
+		int file = 12;
+		if (!lostMusicPlayed) {
+			for (int i = 0; i < soundFiles.length; i++) {
+				if ((i != file) && sounds.isPlaying(i)) {
+					sounds.stop(i);
+				}
+			}
+			if (!sounds.isPlaying(file) && !isMuted) {
+				sounds.play(file);
+				try {
+					Thread.sleep(4000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				lostMusicPlayed = true;
+			}
+		}
+	}
+
+	public static void playLoseMusic() {
+		int file = 10;
+		if (!lostMusicPlayed) {
+			for (int i = 0; i < soundFiles.length; i++) {
+				if ((i != file) && sounds.isPlaying(i)) {
+					sounds.stop(i);
+				}
+			}
+			if (!sounds.isPlaying(file) && !isMuted) {
+				sounds.play(file);
+				try {
+					Thread.sleep(4000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				lostMusicPlayed = true;
+			}
+		}
+
+	}
+
+	public static void playCollision() {
+		int range = 7, min = 1;
+		int random = (int) (Math.random() * range) + min;
+
+		sounds.play(random);
+	}
+
+	public void globalMute() {
+		if (KeysPressed[KeyEvent.VK_M]) {
+			if (!isMuted) {
+				sounds.setVolumeAll(0);
+				isMuted = !isMuted;
+				System.out.println("here1");
+			} else {
+				sounds.setVolumeAll(5);
+				isMuted = !isMuted;
+				System.out.println("here2");
+			}
+		}
+
+	}
+
+	// setup colors
+	public void colorAssignment() {
+		int x = 100;
+		Color color;
+
+		for (int row = 0; row < bricks.length; ++row) {
+			color = new Color(0, x, 250 - x / 2);
+			for (int iterBrick = 0; iterBrick < bricks[0].length; ++iterBrick) {
+				bricks[row][iterBrick].setColor(color);
+			}
+			x += 25;
+		}
 	}
 
 	// Global escape key
@@ -114,7 +226,8 @@ public class Breakout extends GDV5 {
 			DesignDriver.canvasClean(brush);
 			isTitleScreen = true;
 			isHelpScreen = false;
-			isEndScreen = false;
+			isWinScreen = false;
+			isLossScreen = false;
 			ball.reset();
 			paddle.reset();
 
@@ -132,9 +245,10 @@ public class Breakout extends GDV5 {
 
 	// Title Screen Selection
 	public void titleScreenSelection() {
-		if (KeysPressed[KeyEvent.VK_1]) {
+		if (KeysPressed[KeyEvent.VK_ENTER]) {
 			isTitleScreen = false;
 			ball.setisInPlay(false);
+			playStartMusic();
 		}
 	}
 
@@ -214,26 +328,27 @@ public class Breakout extends GDV5 {
 			if (getLives() > 0 && !isBoardClear()) {
 				drawPlayScreen(brush);
 			} else if (isBoardClear()) {
-				isEndScreen = true;
+				isWinScreen = true;
 				ball.setisInPlay(false);
 				scoreboard.drawWinScreen(brush);
 			} else {
-				isEndScreen = true;
+				isLossScreen = true;
 				ball.setisInPlay(false);
 				scoreboard.drawEndScreen(brush);
 			}
-			if (!ball.getisInPlay() && !isEndScreen) {
+			if (!ball.getisInPlay() && !isWinScreen && !isLossScreen) {
 				scoreboard.drawSpace(brush);
 			}
 		}
 		escapeToMenu(brush);
-
 	}
 
 	public void update() {
 		if (isTitleScreen && !isHelpScreen) {
+			playTitleMusic();
 			titleScreenSelection();
 		} else {
+			playInGameMusic();
 			if (ball.getisInPlay()) {
 				paddle.ballPadCol(ball);
 
@@ -250,8 +365,13 @@ public class Breakout extends GDV5 {
 				paddle.reset();
 				startPlay();
 			}
-
 		}
+		if (isLossScreen) {
+			playLoseMusic();
+		} else if (isWinScreen) {
+			playWinMusic();
+		}
+		globalMute();
 	}
 
 	// ACCESSOR METHODS

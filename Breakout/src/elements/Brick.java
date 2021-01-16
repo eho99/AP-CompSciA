@@ -62,6 +62,8 @@ public class Brick extends Rectangle {
 
 			Breakout.setScore(Breakout.getScore() + scoreIter);
 			Breakout.setBrickStreak(streak + 1);
+			
+			Breakout.playCollision();
 		}
 
 	}

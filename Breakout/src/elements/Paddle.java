@@ -43,7 +43,7 @@ public class Paddle extends Rectangle {
         if (this.intersects(b)) {
             if (collDir == 1) {
                 if (dx == 0) {
-                    double newDy = b.getDy() * -1.1;
+                    double newDy = b.getDy() * -1.2;
                     b.setDy(newDy);
                 } else if (((b.getDx() > 0) && (dx > 0)) || (b.getDx() < 0) && (dx < 0)) {
                     double newDy = -1.15 * b.getDy();
@@ -58,6 +58,7 @@ public class Paddle extends Rectangle {
                 }
                 Breakout.setPaddleBounces(Breakout.getPaddleBounces() + 1);
                 Breakout.setBrickStreak(0);
+                Breakout.playCollision();
             }
         }
 
