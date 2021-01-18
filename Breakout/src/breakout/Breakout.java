@@ -35,7 +35,7 @@ public class Breakout extends GDV5 {
 	private int numBricks = 49, numRows = 7;
 
 	// Menu/State trackers
-	public static boolean isPlaying, isHelpScreen = false, isTitleScreen = true, isLossScreen = false,
+	public static boolean isGameScreen = false, isHelpScreen = false, isTitleScreen = true, isLossScreen = false,
 			isWinScreen = false, isPauseScreen = false, unlockedLvl2 = false, unlockedLvl3 = false,
 			lostMusicPlayed = false, isMuted = false;
 
@@ -56,6 +56,7 @@ public class Breakout extends GDV5 {
 	// SoundDriver Declaration
 	private static String[] soundFiles;
 	private static SoundDriver sounds;
+	private static int FILE;
 
 	public void loadSounds() {
 		soundFiles = new String[13];
@@ -100,26 +101,29 @@ public class Breakout extends GDV5 {
 
 	// All sound playing functions
 	public static void playTitleMusic() {
-		int file = 9;
-		for (int i = 0; i < soundFiles.length; i++) {
-			if ((i != file) && sounds.isPlaying(i)) {
-				sounds.stop(i);
+		if (isTitleScreen) {
+			FILE = 9;
+			for (int i = 0; i < soundFiles.length; i++) {
+				if ((i != FILE) && sounds.isPlaying(i)) {
+					sounds.stop(i);
+				}
+			}
+			if (!sounds.isPlaying(FILE) && !isMuted) {
+				sounds.loop(FILE);
 			}
 		}
-		if (!sounds.isPlaying(file) && !isMuted) {
-			sounds.loop(file);
-		}
+
 	}
 
 	public static void playStartMusic() {
-		int file = 0;
+		FILE = 0;
 		for (int i = 0; i < soundFiles.length; i++) {
-			if ((i != file) && sounds.isPlaying(i)) {
+			if ((i != FILE) && sounds.isPlaying(i)) {
 				sounds.stop(i);
 			}
 		}
-		if (!sounds.isPlaying(file) && !isMuted) {
-			sounds.play(file);
+		if (!sounds.isPlaying(FILE) && !isMuted) {
+			sounds.play(FILE);
 			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
@@ -129,56 +133,57 @@ public class Breakout extends GDV5 {
 	}
 
 	public static void playInGameMusic() {
-		int file = 11;
+		FILE = 11;
 		if (!lostMusicPlayed) {
-			for (int i = 0; i < soundFiles.length; i++) {
-				if ((i != file) && sounds.isPlaying(i)) {
-					sounds.stop(i);
-				}
-			}
-			if (!sounds.isPlaying(file) && !isMuted) {
-				sounds.loop(file);
+//			for (int i = 0; i < soundFiles.length; i++) {
+//				if ((i != FILE) && sounds.isPlaying(i)) {
+//					sounds.stop(i);
+//				}
+//			}
+			if (!sounds.isPlaying(FILE) && !isMuted) {
+				System.out.println("here1");
+				sounds.play(FILE);
 			}
 		}
 
 	}
 
 	public static void playWinMusic() {
-		int file = 12;
+		FILE = 12;
 		if (!lostMusicPlayed) {
-			for (int i = 0; i < soundFiles.length; i++) {
-				if ((i != file) && sounds.isPlaying(i)) {
-					sounds.stop(i);
-				}
-			}
-			if (!sounds.isPlaying(file) && !isMuted) {
-				sounds.play(file);
+//			for (int i = 0; i < soundFiles.length; i++) {
+//				if ((i != FILE) && sounds.isPlaying(i)) {
+//					sounds.stop(i);
+//				}
+//			}
+			sounds.stop(11);
+			if (!sounds.isPlaying(FILE) && !isMuted) {
+				sounds.play(FILE);
 				try {
-					Thread.sleep(4000);
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				lostMusicPlayed = true;
 			}
 		}
 	}
 
 	public static void playLoseMusic() {
-		int file = 10;
+		FILE = 10;
 		if (!lostMusicPlayed) {
-			for (int i = 0; i < soundFiles.length; i++) {
-				if ((i != file) && sounds.isPlaying(i)) {
-					sounds.stop(i);
-				}
-			}
-			if (!sounds.isPlaying(file) && !isMuted) {
-				sounds.play(file);
+//			for (int i = 0; i < soundFiles.length; i++) {
+//				if ((i != FILE) && sounds.isPlaying(i)) {
+//					sounds.stop(i);
+//				}
+//			}
+			sounds.stop(11);
+			if (!sounds.isPlaying(FILE) && !isMuted) {
+				sounds.play(FILE);
 				try {
-					Thread.sleep(4000);
+					Thread.sleep(3000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				lostMusicPlayed = true;
 			}
 		}
 
@@ -194,11 +199,11 @@ public class Breakout extends GDV5 {
 	public void globalMute() {
 		if (KeysPressed[KeyEvent.VK_M]) {
 			if (!isMuted) {
-				sounds.setVolumeAll(0);
+				sounds.setVolumeAll(-10.0f);
 				isMuted = !isMuted;
 				System.out.println("here1");
 			} else {
-				sounds.setVolumeAll(5);
+				// sounds.setVolumeAll(+5.0f);
 				isMuted = !isMuted;
 				System.out.println("here2");
 			}
@@ -212,7 +217,7 @@ public class Breakout extends GDV5 {
 		Color color;
 
 		for (int row = 0; row < bricks.length; ++row) {
-			color = new Color(0, x, 250 - x / 2);
+			color = new Color(150, x, 250 - x / 2);
 			for (int iterBrick = 0; iterBrick < bricks[0].length; ++iterBrick) {
 				bricks[row][iterBrick].setColor(color);
 			}
@@ -228,6 +233,8 @@ public class Breakout extends GDV5 {
 			isHelpScreen = false;
 			isWinScreen = false;
 			isLossScreen = false;
+			lostMusicPlayed = false;
+			isGameScreen = false;
 			ball.reset();
 			paddle.reset();
 
@@ -247,6 +254,7 @@ public class Breakout extends GDV5 {
 	public void titleScreenSelection() {
 		if (KeysPressed[KeyEvent.VK_ENTER]) {
 			isTitleScreen = false;
+			isGameScreen = true;
 			ball.setisInPlay(false);
 			playStartMusic();
 		}
@@ -321,25 +329,30 @@ public class Breakout extends GDV5 {
 	}
 
 	public void draw(Graphics2D brush) {
-		if (isTitleScreen && !isHelpScreen) {
+		if (isTitleScreen) {
 			title.drawTitle(brush);
 			title.drawHelpScreen(brush);
-		} else {
+		} else if (isGameScreen) {
 			if (getLives() > 0 && !isBoardClear()) {
 				drawPlayScreen(brush);
 			} else if (isBoardClear()) {
 				isWinScreen = true;
+				isGameScreen = false;
 				ball.setisInPlay(false);
-				scoreboard.drawWinScreen(brush);
 			} else {
 				isLossScreen = true;
+				isGameScreen = false;
 				ball.setisInPlay(false);
-				scoreboard.drawEndScreen(brush);
 			}
-			if (!ball.getisInPlay() && !isWinScreen && !isLossScreen) {
+			if (!ball.getisInPlay()) {
 				scoreboard.drawSpace(brush);
 			}
+		} else if (isLossScreen) {
+			scoreboard.drawEndScreen(brush);
+		} else if (isWinScreen) {
+			scoreboard.drawWinScreen(brush);
 		}
+
 		escapeToMenu(brush);
 	}
 
@@ -347,7 +360,7 @@ public class Breakout extends GDV5 {
 		if (isTitleScreen && !isHelpScreen) {
 			playTitleMusic();
 			titleScreenSelection();
-		} else {
+		} else if (isGameScreen) {
 			playInGameMusic();
 			if (ball.getisInPlay()) {
 				paddle.ballPadCol(ball);
@@ -365,13 +378,12 @@ public class Breakout extends GDV5 {
 				paddle.reset();
 				startPlay();
 			}
-		}
-		if (isLossScreen) {
+		} else if (isLossScreen) {
 			playLoseMusic();
 		} else if (isWinScreen) {
 			playWinMusic();
 		}
-		globalMute();
+		// globalMute();
 	}
 
 	// ACCESSOR METHODS

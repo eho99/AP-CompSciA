@@ -7,12 +7,14 @@ import utilities.*;
 import breakout.Breakout;
 
 public class Ball extends Rectangle {
-	private double dx, dy; 
+	private double dx, dy;
 
-	private static final int MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(),
-			MAX_WINDOW_Y = GDV5.getMaxWindowY(), MAX_SPEED = 10;
+	private static final int MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX(), MAX_WINDOW_Y = GDV5.getMaxWindowY(),
+			MAX_SPEED = 10;
 	private static int STARTING_X, STARTING_Y;
 	private static boolean isInPlay = false;
+	private boolean rightWall = getMaxX() >= MAX_WINDOW_X, leftWall = getMinX() <= MIN_WINDOW,
+			topWall = getMinY() <= MIN_WINDOW, bottomWall = getMaxY() >= MAX_WINDOW_Y;
 
 	// Ball constructor to be defined in other classes
 	public Ball(int x, int y, int height, int width) {
@@ -42,13 +44,13 @@ public class Ball extends Rectangle {
 	}
 
 	// Gets random speed
-	public int getSpeed() {
+	private int getSpeed() {
 		int range = 3, min = 5;
 		return (int) (Math.random() * range) + min;
 	}
 
 	// Gets random direction
-	public int getDir() {
+	private int getDir() {
 		int rand = (int) (Math.random() * 2);
 		if (rand == 1)
 			return 1;
@@ -61,13 +63,16 @@ public class Ball extends Rectangle {
 		dy = getSpeed() * -1; // Breakout always starts moving up
 	}
 
+	public void checkWalls() {
+		rightWall = getMaxX() >= MAX_WINDOW_X;
+		leftWall = getMinX() <= MIN_WINDOW;
+		topWall = getMinY() <= MIN_WINDOW;
+		bottomWall = getMaxY() >= MAX_WINDOW_Y;
+	}
+
 	// Checks ball collision for window edges
 	public void wallColl() {
-		boolean rightWall =  getMaxX() >= MAX_WINDOW_X; // previousXPos + width <= MAX_WINDOW_X && getMaxX() >= MAX_WINDOW_X;
-		boolean leftWall = getMinX() <= MIN_WINDOW; // previousXPos >= MIN_WINDOW && getMinX() <= MIN_WINDOW;
-		boolean topWall = getMinY() <= MIN_WINDOW; // previousYPos >= MIN_WINDOW && getMinY() <= MIN_WINDOW;
-		boolean bottomWall = getMaxY() >= MAX_WINDOW_Y; // previousYPos + height <= MAX_WINDOW_Y && getMaxY() >= MAX_WINDOW_Y;
-		
+		checkWalls();
 		if (rightWall && (Math.signum(dx) == 1.0) || leftWall && (Math.signum(dx) == -1.0)) {
 			dx *= -1;
 			Breakout.playCollision();
