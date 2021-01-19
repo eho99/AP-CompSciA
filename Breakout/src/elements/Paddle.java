@@ -10,7 +10,7 @@ import utilities.GDV5;
 public class Paddle extends Rectangle {
     private int dx, dy;
     private static final int MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX();
-    private static int STARTING_X, STARTING_Y;
+    private static int STARTING_X, STARTING_Y, STARTING_WIDTH, STARTING_HEIGHT;
 
     // Paddle constructor to be defined in other classes
     public Paddle(int x, int y, int height, int width) {
@@ -22,6 +22,8 @@ public class Paddle extends Rectangle {
 
         STARTING_X = x;
         STARTING_Y = y;
+        STARTING_WIDTH = width;
+		STARTING_HEIGHT = height;
     }
 
     // Moves the paddle and checks for edge
@@ -66,6 +68,9 @@ public class Paddle extends Rectangle {
 
     public void reset() {
         setLocation(STARTING_X, STARTING_Y);
+        width = STARTING_WIDTH;
+        height = STARTING_HEIGHT;
+        
     }
 
     // calls movement

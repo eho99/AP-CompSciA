@@ -5,12 +5,15 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import breakout.Breakout;
+import elements.Powerup;
 import utilities.*;
 
 public class Brick extends Rectangle {
 	private static int scoreIter = 100;
 	private boolean isShown = true, hasShattered = false;
 	private Color brickClr;
+	private int powerUpID;
+	private Powerup powerup;
 
 	// Brick constructor to be defined in other classes
 	public Brick(int x, int y, int height, int width) {
@@ -30,12 +33,27 @@ public class Brick extends Rectangle {
 		}
 		Rectangle[] shatterRect = new Rectangle[numPieces];
 		for (Rectangle r : shatterRect) {
-			
+
 		}
 	}
-	
-	
-	public boolean genPowerUp() {
+
+	// Calculates changes to get a powerup
+	public boolean calcChances() {
+		int range = 10, min = 1;
+		int num = (int) (Math.random() * range) + min;
+		if (num == 1) {
+			powerUpID = 1;
+			return true;
+		} else if (num == 2) {
+			powerUpID = 2;
+			return true;
+		} else if (num == 3) {
+			powerUpID = 3;
+			return true;
+		} else if (num == 4) {
+			powerUpID = 4;
+			return true;
+		}
 		return false;
 	}
 
@@ -45,7 +63,7 @@ public class Brick extends Rectangle {
 			int bDx = (int) b.getDx();
 			int bDy = (int) b.getDy();
 			int collDir = GDV5.collisionDirection(this, b, bDx, bDy);
-			
+
 			if (collDir == 0 || collDir == 2) { /* intersects from right/left */
 				b.setDx(-1 * b.getDx());
 			}
@@ -62,8 +80,12 @@ public class Brick extends Rectangle {
 
 			Breakout.setScore(Breakout.getScore() + scoreIter);
 			Breakout.setBrickStreak(streak + 1);
-			
+
 			Breakout.playCollision();
+
+			if (calcChances()) {
+				powerup = new Powerup((int) this.getCenterX() - 7, (int) this.getCenterY(), powerUpID);
+			}
 		}
 
 	}
@@ -74,6 +96,18 @@ public class Brick extends Rectangle {
 			win.setColor(brickClr);
 			win.fill(this);
 		}
+		if (powerup != null) {
+			powerup.draw(win);
+		}
+
+	}
+
+	public void update(Paddle p, Ball b) {
+		if (powerup != null) {
+			powerup.collision(p, b);
+			powerup.update();
+		}
+
 	}
 
 	public boolean getShownState() {
@@ -83,13 +117,17 @@ public class Brick extends Rectangle {
 	public void setShownState(boolean state) {
 		isShown = state;
 	}
-	
+
 	public Color getColor() {
 		return brickClr;
 	}
-	
+
 	public void setColor(Color clr) {
 		brickClr = clr;
+	}
+	
+	public void setPowerup(Powerup p) {
+		powerup = p;
 	}
 
 }

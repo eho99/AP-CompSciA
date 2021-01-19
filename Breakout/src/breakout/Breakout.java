@@ -19,7 +19,7 @@ public class Breakout extends GDV5 {
 	private static final int HORIZONTAL_BRICK_DISTANCE = 15, VERTICAL_BRICK_DISTANCE = 15;
 
 	// Brick position and dimensions
-	private int sBrickX = HORIZONTAL_BRICK_DISTANCE, sBrickY = 90, brickHeight = 22, brickWidth = 0, paddleWidth = 200; // 140-200
+	private int sBrickX = HORIZONTAL_BRICK_DISTANCE, sBrickY = 90, brickHeight = 22, brickWidth = 0, paddleWidth = 175; // 140-200
 
 	// Ball position and dimensions
 	private int ballHeight = 25, ballWidth = 25, sBallX = (MAX_WINDOW_X / 2) - 10,
@@ -32,12 +32,14 @@ public class Breakout extends GDV5 {
 	private static int playerLives = 5, playerScore = 0, paddleBounces = 0, brickStreak = 0;
 
 	// Total brick and number of rows
-	private int numBricks = 49, numRows = 7;
+	private int numBricks = 70, numRows = 10, bricksPerRow = numBricks / numRows;
 
 	// Menu/State trackers
 	public static boolean isGameScreen = false, isHelpScreen = false, isTitleScreen = true, isLossScreen = false,
 			isWinScreen = false, isPauseScreen = false, unlockedLvl2 = false, unlockedLvl3 = false,
-			lostMusicPlayed = false, isMuted = false;
+			lostMusicPlayed = false, isMuted = false, madeBricks = true;
+
+	public static int level = 1;
 
 	// Declaration of brick array
 	Brick[][] bricks;
@@ -79,7 +81,6 @@ public class Breakout extends GDV5 {
 	// Class Constructor
 	public Breakout() {
 		loadSounds();
-		int bricksPerRow = numBricks / numRows;
 		bricks = new Brick[numRows][bricksPerRow];
 
 		int whiteSpace = HORIZONTAL_BRICK_DISTANCE * bricksPerRow;
@@ -97,6 +98,7 @@ public class Breakout extends GDV5 {
 		int edgeBrickX = whiteSpace + (bricksPerRow * brickWidth);
 		setMaxWindowX(edgeBrickX + HORIZONTAL_BRICK_DISTANCE);
 		colorAssignment();
+		makeLvl1();
 	}
 
 	// All sound playing functions
@@ -135,13 +137,7 @@ public class Breakout extends GDV5 {
 	public static void playInGameMusic() {
 		FILE = 11;
 		if (!lostMusicPlayed) {
-//			for (int i = 0; i < soundFiles.length; i++) {
-//				if ((i != FILE) && sounds.isPlaying(i)) {
-//					sounds.stop(i);
-//				}
-//			}
 			if (!sounds.isPlaying(FILE) && !isMuted) {
-				System.out.println("here1");
 				sounds.play(FILE);
 			}
 		}
@@ -151,19 +147,10 @@ public class Breakout extends GDV5 {
 	public static void playWinMusic() {
 		FILE = 12;
 		if (!lostMusicPlayed) {
-//			for (int i = 0; i < soundFiles.length; i++) {
-//				if ((i != FILE) && sounds.isPlaying(i)) {
-//					sounds.stop(i);
-//				}
-//			}
 			sounds.stop(11);
 			if (!sounds.isPlaying(FILE) && !isMuted) {
 				sounds.play(FILE);
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				lostMusicPlayed = true;
 			}
 		}
 	}
@@ -171,19 +158,10 @@ public class Breakout extends GDV5 {
 	public static void playLoseMusic() {
 		FILE = 10;
 		if (!lostMusicPlayed) {
-//			for (int i = 0; i < soundFiles.length; i++) {
-//				if ((i != FILE) && sounds.isPlaying(i)) {
-//					sounds.stop(i);
-//				}
-//			}
 			sounds.stop(11);
 			if (!sounds.isPlaying(FILE) && !isMuted) {
 				sounds.play(FILE);
-				try {
-					Thread.sleep(3000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				lostMusicPlayed = true;
 			}
 		}
 
@@ -192,28 +170,27 @@ public class Breakout extends GDV5 {
 	public static void playCollision() {
 		int range = 7, min = 1;
 		int random = (int) (Math.random() * range) + min;
-
 		sounds.play(random);
 	}
 
-	public void globalMute() {
-		if (KeysPressed[KeyEvent.VK_M]) {
-			if (!isMuted) {
-				sounds.setVolumeAll(-10.0f);
-				isMuted = !isMuted;
-				System.out.println("here1");
-			} else {
-				// sounds.setVolumeAll(+5.0f);
-				isMuted = !isMuted;
-				System.out.println("here2");
-			}
-		}
-
-	}
+//	public void globalMute() {
+//		if (KeysPressed[KeyEvent.VK_M]) {
+//			if (!isMuted) {
+//				sounds.setVolumeAll(-10.0f);
+//				isMuted = !isMuted;
+//				System.out.println("here1");
+//			} else {
+//				// sounds.setVolumeAll(+5.0f);
+//				isMuted = !isMuted;
+//				System.out.println("here2");
+//			}
+//		}
+//
+//	}
 
 	// setup colors
 	public void colorAssignment() {
-		int x = 100;
+		int x = 80;
 		Color color;
 
 		for (int row = 0; row < bricks.length; ++row) {
@@ -221,7 +198,7 @@ public class Breakout extends GDV5 {
 			for (int iterBrick = 0; iterBrick < bricks[0].length; ++iterBrick) {
 				bricks[row][iterBrick].setColor(color);
 			}
-			x += 25;
+			x += 15;
 		}
 	}
 
@@ -235,18 +212,24 @@ public class Breakout extends GDV5 {
 			isLossScreen = false;
 			lostMusicPlayed = false;
 			isGameScreen = false;
+			unlockedLvl2 = false;
+			unlockedLvl3 = false;
+			level = 1;
+
 			ball.reset();
 			paddle.reset();
 
 			for (Brick[] row : bricks) {
 				for (Brick bk : row) {
 					bk.setShownState(true);
+					bk.setPowerup(null);
 				}
 			}
 			setLives(5);
 			setScore(0);
 			setPaddleBounces(0);
 			setBrickStreak(0);
+			makeLvl1();
 		}
 	}
 
@@ -294,38 +277,102 @@ public class Breakout extends GDV5 {
 		return true; // true means all bricks are cleared
 	}
 
-	public void drawLvl1(Graphics2D brush) {
-		numBricks = 49;
-		numRows = 7;
+	public void setAllShown() {
+		for (int row = 0; row < numRows; ++row) {
+			for (int bk = 0; bk < bricksPerRow; ++bk) {
+				bricks[row][bk].setShownState(true);
+			}
+		}
+	}
+
+	public void makeLvl1() {
+		setAllShown();
+		for (int row = 0; row < numRows; ++row) {
+			for (int bk = 0; bk < bricksPerRow; ++bk) {
+				if (row > 7) {
+					bricks[row][bk].setShownState(false);
+				}
+				if (bk == 1 || bk == (bricksPerRow - 2)) {
+					bricks[row][bk].setShownState(false);
+				}
+			}
+		}
+	}
+
+	public void makeLvl2() {
+		setAllShown();
+		for (int row = 0; row < numRows; ++row) {
+			for (int bk = 0; bk < bricksPerRow; ++bk) {
+				if (row > 7) {
+					bricks[row][bk].setShownState(false);
+				}
+				if (row == 1 || row == 6) {
+					if (bk != 0 && bk != 6) {
+						bricks[row][bk].setShownState(false);
+					}
+				}
+				if (row == 2 || row == 5) {
+					if (bk == 1 || bk == 5) {
+						bricks[row][bk].setShownState(false);
+					}
+				}
+				if (row == 3 || row == 4) {
+					if (bk == 1 || bk == 3 || bk == 5) {
+						bricks[row][bk].setShownState(false);
+					}
+
+				}
+			}
+		}
+	}
+
+	public void makeLvl3() {
+		setAllShown();
+	}
+
+	public void drawPlayScreen(Graphics2D brush) {
 		for (Brick[] row : bricks) {
 			for (Brick bk : row) {
 				bk.draw(brush);
 			}
 		}
-	}
-
-	public void drawLvl2(Graphics2D brush) {
-
-	}
-
-	public void drawLvl3(Graphics2D brush) {
-
-	}
-
-	public void drawPlayScreen(Graphics2D brush) {
-		if (unlockedLvl3) {
-			drawLvl3(brush);
-		} else if (unlockedLvl2) {
-			drawLvl2(brush);
-		} else {
-			drawLvl1(brush);
-		}
 
 		ball.draw(brush);
 		paddle.draw(brush);
-		scoreboard.drawLives(brush);
-		scoreboard.drawScore(brush);
-		scoreboard.drawBounces(brush);
+		scoreboard.drawTopBar(brush);
+	}
+
+	public void handleLevels() {
+		ball.reset();
+		if (unlockedLvl3) {
+			isWinScreen = true;
+		} else if (unlockedLvl2) {
+			unlockedLvl3 = true;
+			if (!madeBricks) {
+				makeLvl3();
+				setLives(5);
+				level = 3;
+			}
+
+			for (Brick[] row : bricks) {
+				for (Brick bk : row) {
+					bk.setPowerup(null);
+				}
+			}
+		} else {
+			unlockedLvl2 = true;
+			if (!madeBricks) {
+				makeLvl2();
+				setLives(5);
+				level = 2;
+			}
+
+			for (Brick[] row : bricks) {
+				for (Brick bk : row) {
+					bk.setPowerup(null);
+				}
+			}
+		}
 	}
 
 	public void draw(Graphics2D brush) {
@@ -333,11 +380,12 @@ public class Breakout extends GDV5 {
 			title.drawTitle(brush);
 			title.drawHelpScreen(brush);
 		} else if (isGameScreen) {
+			
 			if (getLives() > 0 && !isBoardClear()) {
 				drawPlayScreen(brush);
 			} else if (isBoardClear()) {
-				isWinScreen = true;
-				isGameScreen = false;
+				madeBricks = false;
+				handleLevels();
 				ball.setisInPlay(false);
 			} else {
 				isLossScreen = true;
@@ -368,6 +416,7 @@ public class Breakout extends GDV5 {
 				for (Brick[] row : bricks) {
 					for (Brick bk : row) {
 						bk.ballBrickCol(ball);
+						bk.update(paddle, ball);
 					}
 				}
 
@@ -383,7 +432,6 @@ public class Breakout extends GDV5 {
 		} else if (isWinScreen) {
 			playWinMusic();
 		}
-		// globalMute();
 	}
 
 	// ACCESSOR METHODS
@@ -435,11 +483,14 @@ public class Breakout extends GDV5 {
 		this.unlockedLvl3 = unlockedLvl3;
 	}
 
+	public static int getLevel() {
+		return level;
+	}
+
 	// MAIN
 	public static void main(String[] args) {
 		// Breakout breakout = new Breakout(12, 3);
 		Breakout breakout = new Breakout();
 		breakout.start();
-
 	}
 }
