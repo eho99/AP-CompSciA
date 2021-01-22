@@ -59,6 +59,9 @@ public class TitleScreen extends DesignDriver {
         text = "Press SPACE to serve the ball across.";
         drawMultiLineString(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
         
+        yLevel = 700;
+        text = "Hint: There are some powerups. Use the colors to help you determine which ones to hit.";
+        drawMultiLineString(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
         
     }
     

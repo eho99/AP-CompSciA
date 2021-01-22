@@ -109,9 +109,9 @@ public class Ball extends Rectangle {
 	// Draws ball
 	public void draw(Graphics2D brush) {
 		brush.setColor(Color.WHITE);
-		brush.fill(this);
-		// rush.drawOval(x, y, width, height);
-		// brush.fillOval(x, y, width, height);
+		// brush.fill(this);
+		brush.drawOval(x, y, width, height);
+		brush.fillOval(x, y, width, height);
 	}
 
 	// Accessor Methods

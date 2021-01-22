@@ -66,7 +66,7 @@ public class Scoreboard extends DesignDriver {
 		String text = "Level " + level;
 		setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
 	}
-	
+
 	// implements draw functions for top bar
 	public void drawTopBar(Graphics2D brush) {
 		drawLives(brush);
@@ -86,7 +86,8 @@ public class Scoreboard extends DesignDriver {
 
 	// Draw End Screen
 	public void drawEndScreen(Graphics2D brush) {
-		String score = Integer.toString(Breakout.getScore());
+		int iScore = Breakout.getScore(), iHighScore = Breakout.getHighScore();
+		String score = Integer.toString(iScore);
 		alignment = "center";
 		yLevel = 200;
 		fontSize = 100;
@@ -98,14 +99,26 @@ public class Scoreboard extends DesignDriver {
 		text = "Final Score: " + score;
 		setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
 
-		yLevel = 350;
+		if (iScore > iHighScore || iHighScore == 0) {
+			Breakout.setHighScore(iScore);
+			text = "You got a high score!";
+			yLevel += 50;
+			setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
+		} else {
+			text = "Current High Score: " + Integer.toString(iHighScore);
+			yLevel += 50;
+			setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
+		}
+
+		yLevel += 50;
 		text = "Press Escape to Exit";
 		setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
 	}
 
 	// Draw Win Screen
 	public void drawWinScreen(Graphics2D brush) {
-		String score = Integer.toString(Breakout.getScore() + (2000 * Breakout.getLives()));
+		int iScore = Breakout.getScore(), iHighScore = Breakout.getHighScore();
+		String score = Integer.toString(iScore + (2000 * Breakout.getLives()));
 
 		alignment = "center";
 		yLevel = 200;
@@ -117,6 +130,18 @@ public class Scoreboard extends DesignDriver {
 		fontSize = 30;
 		text = "Final Score: " + score;
 		setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
+
+		if (iScore > iHighScore || iHighScore == 0) {
+			
+			Breakout.setHighScore(iScore);
+			text = "You got a high score!";
+			yLevel += 50;
+			setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
+		} else {
+			text = "Current High Score: " + Integer.toString(iHighScore);
+			yLevel += 50;
+			setAndDraw(brush, Color.WHITE, fontStyle, Font.PLAIN, fontSize, alignment, yLevel, text);
+		}
 
 		yLevel = 350;
 		text = "Press Escape to Exit";

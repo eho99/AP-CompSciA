@@ -3,13 +3,10 @@ package breakout;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.util.LongSummaryStatistics;
 
 import elements.*;
 import design.*;
-import utilities.DesignDriver;
-import utilities.GDV5;
-import utilities.SoundDriver;
+import utilities.*;
 
 public class Breakout extends GDV5 {
 	// JFRAME Constants
@@ -29,14 +26,14 @@ public class Breakout extends GDV5 {
 	private static final int PADDLE_SPEED = 15;
 
 	// Player score and variables
-	private static int playerLives = 5, playerScore = 0, paddleBounces = 0, brickStreak = 0;
+	private static int playerLives = 5, playerScore = 0, paddleBounces = 0, brickStreak = 0, highScore = 0;
 
 	// Total brick and number of rows
 	private int numBricks = 70, numRows = 10, bricksPerRow = numBricks / numRows;
 
 	// Menu/State trackers
-	public static boolean isGameScreen = false, isHelpScreen = false, isTitleScreen = true, isLossScreen = false,
-			isWinScreen = false, isPauseScreen = false, unlockedLvl2 = false, unlockedLvl3 = false,
+	public static boolean isGameScreen = false, isTitleScreen = true, isLossScreen = false,
+			isWinScreen = false, unlockedLvl2 = false, unlockedLvl3 = false,
 			lostMusicPlayed = false, isMuted = false, madeBricks = true;
 
 	public static int level = 1;
@@ -60,6 +57,7 @@ public class Breakout extends GDV5 {
 	private static SoundDriver sounds;
 	private static int FILE;
 
+	// Populates the array and declares the SoundDriver object
 	public void loadSounds() {
 		soundFiles = new String[13];
 		soundFiles[0] = "./../sounds/start.wav";
@@ -78,7 +76,7 @@ public class Breakout extends GDV5 {
 		sounds = new SoundDriver(soundFiles, this);
 	}
 
-	// Class Constructor
+	// Class Constructor - initializes sounds, calculates brick width, assigns colors, and makes first level
 	public Breakout() {
 		loadSounds();
 		bricks = new Brick[numRows][bricksPerRow];
@@ -101,7 +99,10 @@ public class Breakout extends GDV5 {
 		makeLvl1();
 	}
 
-	// All sound playing functions
+	/**
+	 * All sound playing functions are contained below. 
+	 */
+	// Plays title music
 	public static void playTitleMusic() {
 		if (isTitleScreen) {
 			FILE = 9;
@@ -117,6 +118,7 @@ public class Breakout extends GDV5 {
 
 	}
 
+	// Plays startup music
 	public static void playStartMusic() {
 		FILE = 0;
 		for (int i = 0; i < soundFiles.length; i++) {
@@ -134,6 +136,7 @@ public class Breakout extends GDV5 {
 		}
 	}
 
+	// Plays background music
 	public static void playInGameMusic() {
 		FILE = 11;
 		if (!lostMusicPlayed) {
@@ -144,6 +147,7 @@ public class Breakout extends GDV5 {
 
 	}
 
+	// Plays victory music
 	public static void playWinMusic() {
 		FILE = 12;
 		if (!lostMusicPlayed) {
@@ -155,6 +159,7 @@ public class Breakout extends GDV5 {
 		}
 	}
 
+	// Plays losing music
 	public static void playLoseMusic() {
 		FILE = 10;
 		if (!lostMusicPlayed) {
@@ -167,26 +172,12 @@ public class Breakout extends GDV5 {
 
 	}
 
+	// Picks a random collision sound and plays it
 	public static void playCollision() {
 		int range = 7, min = 1;
 		int random = (int) (Math.random() * range) + min;
 		sounds.play(random);
 	}
-
-//	public void globalMute() {
-//		if (KeysPressed[KeyEvent.VK_M]) {
-//			if (!isMuted) {
-//				sounds.setVolumeAll(-10.0f);
-//				isMuted = !isMuted;
-//				System.out.println("here1");
-//			} else {
-//				// sounds.setVolumeAll(+5.0f);
-//				isMuted = !isMuted;
-//				System.out.println("here2");
-//			}
-//		}
-//
-//	}
 
 	// setup colors
 	public void colorAssignment() {
@@ -207,7 +198,7 @@ public class Breakout extends GDV5 {
 		if (KeysPressed[KeyEvent.VK_ESCAPE]) {
 			DesignDriver.canvasClean(brush);
 			isTitleScreen = true;
-			isHelpScreen = false;
+
 			isWinScreen = false;
 			isLossScreen = false;
 			lostMusicPlayed = false;
@@ -230,6 +221,24 @@ public class Breakout extends GDV5 {
 			setPaddleBounces(0);
 			setBrickStreak(0);
 			makeLvl1();
+		}
+	}
+	
+	
+	// Level Skip - VIDEO TESTING PURPOSES ONLY
+	public void levelSkip() {
+		if (KeysPressed[KeyEvent.VK_L]) {
+			for (int row = 0; row < numRows; ++row) {
+				for (int bk = 0; bk < bricksPerRow; ++bk) {
+					bricks[row][bk].setShownState(false);
+				}
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -264,6 +273,7 @@ public class Breakout extends GDV5 {
 		}
 	}
 
+	// checks if all the bricks are hit
 	public boolean isBoardClear() {
 		boolean notClear = false;
 
@@ -277,6 +287,7 @@ public class Breakout extends GDV5 {
 		return true; // true means all bricks are cleared
 	}
 
+	// Makes all bricks shown
 	public void setAllShown() {
 		for (int row = 0; row < numRows; ++row) {
 			for (int bk = 0; bk < bricksPerRow; ++bk) {
@@ -285,6 +296,7 @@ public class Breakout extends GDV5 {
 		}
 	}
 
+	// Generates the pattern for level 1
 	public void makeLvl1() {
 		setAllShown();
 		for (int row = 0; row < numRows; ++row) {
@@ -299,6 +311,7 @@ public class Breakout extends GDV5 {
 		}
 	}
 
+	// Generates the pattern for level 2
 	public void makeLvl2() {
 		setAllShown();
 		for (int row = 0; row < numRows; ++row) {
@@ -326,10 +339,12 @@ public class Breakout extends GDV5 {
 		}
 	}
 
+	// Generates the pattern for level 3
 	public void makeLvl3() {
 		setAllShown();
 	}
 
+	// Draws bricks, score, lives, level, and paddle bounces
 	public void drawPlayScreen(Graphics2D brush) {
 		for (Brick[] row : bricks) {
 			for (Brick bk : row) {
@@ -342,6 +357,7 @@ public class Breakout extends GDV5 {
 		scoreboard.drawTopBar(brush);
 	}
 
+	// Checks for levels and cleans up to start the new level when necessary
 	public void handleLevels() {
 		ball.reset();
 		if (unlockedLvl3) {
@@ -375,6 +391,8 @@ public class Breakout extends GDV5 {
 		}
 	}
 
+	
+	// draw method for all game objects
 	public void draw(Graphics2D brush) {
 		if (isTitleScreen) {
 			title.drawTitle(brush);
@@ -403,9 +421,10 @@ public class Breakout extends GDV5 {
 
 		escapeToMenu(brush);
 	}
-
+	
+	// update method for all game objects - includes sound
 	public void update() {
-		if (isTitleScreen && !isHelpScreen) {
+		if (isTitleScreen) {
 			playTitleMusic();
 			titleScreenSelection();
 		} else if (isGameScreen) {
@@ -432,6 +451,8 @@ public class Breakout extends GDV5 {
 		} else if (isWinScreen) {
 			playWinMusic();
 		}
+		
+		levelSkip();
 	}
 
 	// ACCESSOR METHODS
@@ -471,25 +492,24 @@ public class Breakout extends GDV5 {
 		return unlockedLvl2;
 	}
 
-	public void setUnlockedLvl2(boolean unlockedLvl2) {
-		this.unlockedLvl2 = unlockedLvl2;
-	}
-
 	public boolean isUnlockedLvl3() {
 		return unlockedLvl3;
-	}
-
-	public void setUnlockedLvl3(boolean unlockedLvl3) {
-		this.unlockedLvl3 = unlockedLvl3;
 	}
 
 	public static int getLevel() {
 		return level;
 	}
 
+	public static int getHighScore() {
+		return highScore;
+	}
+
+	public static void setHighScore(int highScore) {
+		Breakout.highScore = highScore;
+	}
+
 	// MAIN
 	public static void main(String[] args) {
-		// Breakout breakout = new Breakout(12, 3);
 		Breakout breakout = new Breakout();
 		breakout.start();
 	}
