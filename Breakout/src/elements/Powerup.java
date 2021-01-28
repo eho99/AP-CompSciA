@@ -6,10 +6,6 @@ import java.awt.Rectangle;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.naming.ldap.ExtendedRequest;
-
-import breakout.Breakout;
-
 class RevertPaddle extends TimerTask {
 	Paddle p;
 	private int ORIGINAL_WIDTH = 175;
@@ -23,6 +19,7 @@ class RevertPaddle extends TimerTask {
 	}
 }
 
+@SuppressWarnings("serial")
 public class Powerup extends Rectangle {
 	private static final int SPEED = 7;
 	private static int id;
@@ -34,7 +31,6 @@ public class Powerup extends Rectangle {
 		super(x, y, 15, 15);
 		this.x = x;
 		this.y = y;
-		this.id = id;
 	}
 
 	/*

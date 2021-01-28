@@ -5,12 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import breakout.Breakout;
-import elements.Powerup;
 import utilities.*;
 
+@SuppressWarnings("serial")
 public class Brick extends Rectangle {
 	private static int scoreIter = 100;
-	private boolean isShown = true, hasShattered = false;
+	private boolean isShown = true;
 	private Color brickClr;
 	private int powerUpID;
 	private Powerup powerup;
@@ -25,17 +25,17 @@ public class Brick extends Rectangle {
 	}
 
 	// TBD implemented
-	public void shatter(Graphics2D brush) {
-		int numPieces = 0;
-		if (!isShown && !hasShattered) {
-			numPieces = this.width * 3;
-
-		}
-		Rectangle[] shatterRect = new Rectangle[numPieces];
-		for (Rectangle r : shatterRect) {
-
-		}
-	}
+//	public void shatter(Graphics2D brush) {
+//		int numPieces = 0;
+//		if (!isShown && !hasShattered) {
+//			numPieces = this.width * 3;
+//
+//		}
+//		Rectangle[] shatterRect = new Rectangle[numPieces];
+//		for (Rectangle r : shatterRect) {
+//
+//		}
+//	}
 
 	// Calculates changes to get a powerup
 	public boolean calcChances() {

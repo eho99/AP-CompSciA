@@ -8,6 +8,7 @@ import elements.*;
 import design.*;
 import utilities.*;
 
+@SuppressWarnings("serial")
 public class Breakout extends GDV5 {
 	// JFRAME Constants
 	final static int MAX_WINDOW_X = getMaxWindowX(), MAX_WINDOW_Y = getMaxWindowY();

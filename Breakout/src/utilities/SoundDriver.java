@@ -33,7 +33,7 @@ public class SoundDriver {
     private String[] names;
     private int[] framePosition;
     private FloatControl[] gainControl;
-    private Canvas game;
+    // private Canvas game;
     
     /**
      * Creates a SoundDriverUpgraded given the sound locations. These strings can be reused to call all other methods instead of an index.
@@ -41,7 +41,7 @@ public class SoundDriver {
      */
     public SoundDriver(String[] aClips, Canvas game) {
 
-    	this.game = game;
+    	// this.game = game;
     	
     	System.out.println("<Sound Driver> LOADING SOUNDS");
     	

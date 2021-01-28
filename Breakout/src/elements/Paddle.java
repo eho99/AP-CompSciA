@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 import breakout.Breakout;
 import utilities.GDV5;
 
+@SuppressWarnings("serial")
 public class Paddle extends Rectangle {
     private int dx, dy;
     private static final int MIN_WINDOW = 0, MAX_WINDOW_X = GDV5.getMaxWindowX();

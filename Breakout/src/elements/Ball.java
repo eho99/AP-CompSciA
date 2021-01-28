@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import utilities.*;
 import breakout.Breakout;
 
+@SuppressWarnings("serial")
 public class Ball extends Rectangle {
 	private double dx, dy;
 
